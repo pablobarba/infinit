@@ -324,7 +324,7 @@ return [
         ],
         [
             'text' => 'Licencias',
-            'url'  => 'roles',
+            'url'  => 'licencias',
             'icon' => 'fas fa-fw fa-calendar-times',
         ],
         /*[

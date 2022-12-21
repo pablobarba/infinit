@@ -6,7 +6,10 @@ use App\Models\Licencias;
 use App\Models\LicenciasXProfesor;
 use App\Models\Profesor;
 use App\Models\Roles;
+use App\Models\RolesXProfesor;
 use App\Models\vwLicenciasXProfesor;
+use App\Models\rolSemDays;
+use App\Models\rolXProfesorSem;
 use App\Models\vwRolXProfesor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -110,5 +113,124 @@ class ProfesorController extends Controller
         }
     }
 
-    
+    public function roles($id_profesor){
+        $profesor = Profesor::find($id_profesor);
+        $rxps = vwRolXProfesor::where('legajo_prof',$profesor->legajo)->get();
+        $roles = Roles::get();
+        return view("profesors/roles",['rxps' => $rxps,'profesor'=>$profesor,'roles' => $roles]);
+    }
+
+    public function rolDelete(Request $request)
+    {
+        if(request()->ajax())
+            {
+                $request->validate([
+                    'fecha_fin'=>'required',
+                ]);
+        
+                if (isset($request->validator) && $request->validator->fails())
+                {
+                    
+                    return response()->json(['errors'=>$request->validator->messages()], 422);
+                }
+                else{
+                    $rol=RolesXProfesor::find($request->id_rol_x_pro);
+                    $rol->baja = 1;
+                    $rol->fecha_fin = $request->fecha_fin;
+                    $rol->save();
+                    $profesor = Profesor::where('legajo',$request->legajo)->first();
+                    return route('profesors.roles',['id_profesor' => $profesor->id]);
+                }
+            
+    }
+    }
+
+    public function rolCreate(Request $request)
+    {
+        $request->validate([
+            'id_rol'=>'required',
+            'sit_revista'=>'required'
+        ]);
+
+        if (isset($request->validator) && $request->validator->fails())
+        {
+            return response()->json(['errors'=>$request->validator->messages()]);
+        }
+
+        else
+        {
+            //check if already exist
+        $rxp = RolesXProfesor::where('legajo_prof',$request->legajo)
+        ->where('id_rol', $request->id_rol)->where('sit_revista', $request->sit_revista)->first();
+        if($rxp){
+            $errors= [
+                "Ya existe la asignación por rol"
+            ];
+            return response()->json(['errors'=>$errors], 422);
+        }
+        else{
+        $rxp2 = new RolesXProfesor();
+        $profesor = Profesor::where('legajo',$request->legajo)->first();
+        $rxp2->id_rol = $request->id_rol;
+        $rxp2->legajo_prof = $request->legajo;
+        $rxp2->sit_revista =  $request->sit_revista;
+        $rxp2->baja = 0;
+        $rxp2->save();
+        return route('profesors.roles',['id_profesor' => $profesor->id]);
+        }
+        }
+    }
+
+    public function rolSemDays(Request $request)
+    {
+        if(request()->ajax())
+            {
+                $rxpss = rolXProfesorSem::where('id_rol_prof',$request->id_rol_prof)->first();
+                if($rxpss){
+                    return view("profesors/rolesSemDays",['r' => $rxpss,'nombre_rol'=>$request->nombre_rol,'data_sit' => $request->data_sit])->render();
+                }
+                else{  
+                    $rxpss =new  rolXProfesorSem();
+                    $rxpss->id = 0;
+                    $rxpss->id_rol_prof = $request->id_rol_prof;
+                    $rxpss->legajo_prof = $request->legajo;
+                    $rxpss->lunes = 0;
+                    $rxpss->martes = 0;
+                    $rxpss->miercoles = 0;
+                    $rxpss->jueves = 0;
+                    $rxpss->viernes = 0;
+                    $rxpss->sabado = 0;
+                    return view("profesors/rolesSemDays",['r' => $rxpss,'nombre_rol'=>$request->nombre_rol,'data_sit' => $request->data_sit])->render();
+                }
+           
+            
+    }
+    }
+
+    public function rolSaveSemDays(Request $request)
+    {
+        if(request()->ajax())
+            {
+                $rxpss = new rolXProfesorSem();
+                $result = json_decode($request);
+                if($request->data['id']>0){
+                    $idRolSem = $request->data['id'];
+                    $rxpss = rolXProfesorSem::find($idRolSem)->first();
+                }
+
+                $rxpss->id_rol_prof = $request->data['id_rol_prof'];
+                $rxpss->baja = 0;
+                $rxpss->lunes = $request->data['monday']=='true' ? 1 : 0;
+                $rxpss->martes = $request->data['tuesday']=='true' ? 1 : 0;
+                $rxpss->miercoles = $request->data['wenesday']=='true' ? 1 : 0;
+                $rxpss->jueves = $request->data['thursday']=='true' ? 1 : 0;
+                $rxpss->viernes = $request->data['friday']=='true' ? 1 : 0;
+                $rxpss->sabado = $request->data['saturday']=='true' ? 1 : 0;
+                
+                $rxpss->save();
+                
+
+    }
+    }
+
 }

@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('Create view vw_licencia_x_profesor AS 
+        DB::statement('Create or replace view vw_licencia_x_profesor AS 
         select lxp.id
         , lxp.baja
         , lxp.id_licencia

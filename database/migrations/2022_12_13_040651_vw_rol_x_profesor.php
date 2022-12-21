@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('Create view vw_rol_x_profesor AS 
+        DB::statement('Create or replace view vw_rol_x_profesor AS 
         select rxp.id
         , rxp.baja
         , rxp.legajo_prof
@@ -22,6 +22,7 @@ return new class extends Migration
         , pro.apellido as apellido_profesor 
         , rol.nombre as nombre_rol
         , rxp.sit_revista
+        ,rxp.fecha_fin
         from roles_x_profesor rxp 
         INNER JOIN profesores pro on pro.legajo = rxp.legajo_prof
         INNER JOIN roles rol on rxp.id_rol = rol.id');

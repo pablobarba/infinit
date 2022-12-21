@@ -82,7 +82,7 @@
                     <td>{{$profesor->legajo}}</td>
                     <td><a class="fa fa-calendar"  ></a></td>
                     <td><a class="fa fa-calendar-times" href="{{route('profesors.absents',['id_profesor' => $profesor->id])}}"></a></td>
-                    <td><a class="fa fa-graduation-cap"  ></a></td>
+                    <td><a class="fa fa-graduation-cap" href="{{route('profesors.roles',['id_profesor' => $profesor->id])}}"></a></td>
                   </tr>
             @endforeach
         </tbody>

@@ -31,7 +31,11 @@ Route::controller(ProfesorController::class)->group(function(){
     Route::post('profesors/licCreate@filter','licCreate') -> name('profesors.licCreate');
     Route::get('profesors/licFilterDate@fetch_data', 'licFilterDate') -> name('profesors.licFilterDate');
 
-    //Route::get('profesors/absents/{id_profesor}', 'absents') -> name('profesors.absents');
+    Route::get('profesors/roles/{id_profesor}', 'roles') -> name('profesors.roles');
+    Route::post('profesors/rolDelete@data','rolDelete') -> name('profesors.rolDelete');
+    Route::post('profesors/rolCreate@filter','rolCreate') -> name('profesors.rolCreate');
+    Route::post('profesors/rolSemDays@filter','rolSemDays') -> name('profesors.rolSemDays');
+    Route::post('profesors/rolSaveSemDays@filter','rolSaveSemDays') -> name('profesors.rolSaveSemDays');
 });
 //profesorController
 

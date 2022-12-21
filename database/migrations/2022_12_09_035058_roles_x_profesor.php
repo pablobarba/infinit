@@ -21,7 +21,7 @@ return new class extends Migration
         $table->unsignedBigInteger('id_rol');
         $table->foreign('id_rol')->references('id')->on('roles')->onDelete('cascade');
 
-        $table->date('fecha_fin')->nullable()->change();
+        $table->date('fecha_fin')->nullable();
         $table->integer('legajo_prof');
 
         $table->foreign('legajo_prof')->references('legajo')->on('profesores')->onDelete('cascade');  
