@@ -9,6 +9,7 @@
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#profModal" id="btnProf">
   Crear Profesor
 </button>
+<br>
     <!-- Modal -->
 <div class="modal fade" id="profModal" tabindex="-1" role="dialog" aria-labelledby="profModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -37,11 +38,16 @@
                   <label for="inputLegajo">Legajo</label>
                   <input type="number" name="legajofrm" id="legajofrm" class="form-control" placeholder="Legajo"  />
                 </div>
+                  <div class="form-group col-lg-12 col-md-12">   
+                      <input type="checkbox" class="" id="idProfesorFrm">
+                      <label class="form-check-label" for="check1">Es profesor</label>   
+              </div>
+          </div>
               </div>
               <br>
             </form>
             <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="formSubmit">Grabar</button>
+                    <button type="button" class="btn btn-primary" id="formSubmit" onClick="saveProf()" >Grabar</button>
                 </div>
       </div>
       
@@ -105,6 +111,58 @@ $('#btnProf').on('click',function(){
     $('#profModal').hide();
 });
 
+function saveProf(id) {
+      var op ="";
+      var isProfesor=$('#idProfesorFrm').is(":checked");
+      var name=$('#nombreFrm').val();
+      var lastname=$('#apellidofrm').val();
+      var legajo=$('#legajofrm').val();
+      var dataO = 
+      {
+        id:id,
+        baja: 0, 
+        nombre:name,
+        apellido : lastname,
+        legajo : legajo,
+        es_profesor : isProfesor,
+      };
+        $.ajax ({
+        headers: {
+        'X-CSRF-Token': '{{ csrf_token() }}',
+        },
+        type: 'post',
+       url:'{{ route("profesors.save") }}',
+       data:{
+        'data':dataO, 
+       }
+      ,
+      success: function(data2){
+        $('body').removeClass('modal-open');
+        $('body').css('padding-right', '');
+        $(".modal-backdrop").remove();
+        $('#profModal').hide();
+          alert('Operacion exitosa.');
+          window.location.replace(data2);
+       },
+        error: function(data){
+          if( data.status === 422 ) {
+            var errors = $.parseJSON(data.responseText);
+            $.each(errors.errors, function (key, value) {
+                                $('#alertRolDanger').show();
+                                $('#alertRolDanger').append('<li>'+value+'</li>');
+                            });
+                        }
+                        else
+                        {
+                            alert('Ha ocurrido un error en la transaccion.');
+                            $('.alert-danger').hide();
+                            $('#profModal').modal('hide');
+                        }
+          console.log("Error Occurred");
+        }
+    });
+           
+    }
 
     </script>
 @endsection

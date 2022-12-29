@@ -233,4 +233,94 @@ class ProfesorController extends Controller
     }
     }
 
+    public function save(Request $request)
+    {
+        if(request()->ajax())
+            {
+        $profesor = new Profesor();
+        //verifico datos obligatorios
+        if($request->data['nombre'] == null || $request->data['nombre'] == ''){
+            $errors= [
+                "Nombre es obligatorio"
+            ];
+            return response()->json(['errors'=>$errors], 422);
+        }
+        else if($request->data['apellido'] == null || $request->data['apellido'] == '')
+        {
+            $errors= [
+                "Apellido es obligatorio"
+            ];
+            return response()->json(['errors'=>$errors], 422);
+        }
+        else if($request->data['legajo'] == null || $request->data['legajo'] == '')
+        {
+            $errors= [
+                "Legajo es obligatorio"
+            ];
+            return response()->json(['errors'=>$errors], 422);
+        }
+        //
+        $name = $request->data['nombre'];
+        $lastname = $request->data['apellido'];
+        $legajo = $request->data['legajo'];
+        $isProfesor = $request->data['es_profesor'];
+
+       /* if($request->data['id']>0){
+            $idRol = $request->data['id'];
+            
+            $rxp = Roles::where('codigo', $code)->first();
+            if($rxp){
+                if($rxp->id != $idRol){
+                $errors= [
+                    "El codigo ya existe"
+                ];
+                return response()->json(['errors'=>$errors], 422);
+            }
+            }
+
+            $rol = Roles::where('id', $idRol)->first();
+            if($rol)
+            {
+            $rol->nombre = $name;
+            $rol->codigo = $code;
+            }
+            $rol->save();
+            return route('roles.index');
+        }
+        else{*/
+            //si es rol nuevo
+
+            //verifico si rol ya existe
+            $rxp = Profesor::where('legajo', $legajo)->first();
+            if($rxp){
+                $errors= [
+                    "El legajo ya existe"
+                ];
+                return response()->json(['errors'=>$errors], 422);
+            }
+            $profesor->baja = 0;
+            $profesor->nombre = $name;
+            $profesor->apellido = $lastname;
+            $profesor->legajo = $legajo;
+            $profesor->legajo = $legajo;
+            $profesor->es_profesor = $request->data['es_profesor']=='true' ? 1 : 0;
+            
+        $profesor->save();
+        return route('profesors.index');
+        //}
+        
+        }
+    }
+
+    public function getRolProfSemDay(Request $request)
+    {
+        if(request()->ajax())
+            {
+                $rxpss = rolXProfesorSem::where('id_rol_prof',$request->id_rol_prof)->first();
+                if($rxpss ){
+                    return $rxpss;
+                }
+    }
+    }
+
 }

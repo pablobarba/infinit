@@ -6,7 +6,7 @@
     <option value="">--Por favor seleccionar una opcion--</option>
     @foreach($rxps as $rxp)
         <option value="{{ $rxp->id }}">
-            {{ $rxp->rol }}
+            {{ $rxp->nombre_rol }}
         </option>
 
     @endforeach

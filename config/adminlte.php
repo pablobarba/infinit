@@ -327,6 +327,12 @@ return [
             'url'  => 'licencias',
             'icon' => 'fas fa-fw fa-calendar-times',
         ],
+        ['header' => 'REPORTES'],
+        [
+            'text' => 'Carga Licencias',
+            'url'  => 'report',
+            'icon' => 'fas fa-fw fa-bolt',
+        ],
         /*[
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',

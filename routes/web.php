@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\LicenciasController;
 use App\Http\Livewire\Prueb;
 
 /*
@@ -25,6 +27,7 @@ Route::controller(ProfesorController::class)->group(function(){
     Route::get('profesors/create', 'create') -> name('profesors.create');
     Route::get('profesors/presents/{id_profesor}','presents') -> name('profesors.presents');
     Route::get('profesors/absents/{id_profesor}', 'absents') -> name('profesors.absents');
+    Route::post('profesors/save@filter','save') -> name('profesors.save');
     
     Route::post('profesors/licFilterDate@filter','licFilterDate') -> name('profesors.licFilterDate');
     Route::post('profesors/licDelete@filter','licDelete') -> name('profesors.licDelete');
@@ -36,6 +39,7 @@ Route::controller(ProfesorController::class)->group(function(){
     Route::post('profesors/rolCreate@filter','rolCreate') -> name('profesors.rolCreate');
     Route::post('profesors/rolSemDays@filter','rolSemDays') -> name('profesors.rolSemDays');
     Route::post('profesors/rolSaveSemDays@filter','rolSaveSemDays') -> name('profesors.rolSaveSemDays');
+    Route::post('profesors/getRolProfSemDay@filter','getRolProfSemDay') -> name('profesors.getRolProfSemDay');
 });
 //profesorController
 
@@ -43,6 +47,25 @@ Route::controller(ProfesorController::class)->group(function(){
 Route::controller(ReportController::class)->group(function(){
     Route::get('report', 'index') -> name('report.index');
     Route::post('report/getRolByProfesor@filter','getRolByProfesor') -> name('report.getRolByProfesor');
-    Route::post('report/createReport@filter','createReport') -> name('report.createReport');
+    Route::post('report/saveLicences@filter','saveLicences') -> name('report.saveLicences');
 });
 //reportController
+
+//roles
+Route::controller(RolesController::class)->group(function(){
+    Route::get('roles', 'index') -> name('roles.index');
+    Route::post('roles/rolCreate@filter','rolCreate') -> name('roles.rolCreate');
+    Route::post('roles/rolSave@filter','rolSave') -> name('roles.rolSave');
+    Route::post('roles/rolDelete@filter','rolDelete') -> name('roles.rolDelete');
+});
+//roles
+
+//licencias
+Route::controller(LicenciasController::class)->group(function(){
+    Route::get('licencias', 'index') -> name('licencias.index');
+    Route::post('licencias/licCreate@filter','licCreate') -> name('licencias.licCreate');
+    Route::post('licencias/licSave@filter','licSave') -> name('licencias.licSave');
+    Route::post('licencias/licDelete@filter','licDelete') -> name('licencias.licDelete');
+    Route::post('licencias/getLicences@filter','getLicences') -> name('licencias.getLicences');
+});
+//licencias
