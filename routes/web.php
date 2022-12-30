@@ -28,6 +28,7 @@ Route::controller(ProfesorController::class)->group(function(){
     Route::get('profesors/presents/{id_profesor}','presents') -> name('profesors.presents');
     Route::get('profesors/absents/{id_profesor}', 'absents') -> name('profesors.absents');
     Route::post('profesors/save@filter','save') -> name('profesors.save');
+    Route::post('profesors/delete@filter','delete') -> name('profesors.delete');
     
     Route::post('profesors/licFilterDate@filter','licFilterDate') -> name('profesors.licFilterDate');
     Route::post('profesors/licDelete@filter','licDelete') -> name('profesors.licDelete');

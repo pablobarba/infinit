@@ -19,7 +19,7 @@ use PharIo\Manifest\License;
 class ProfesorController extends Controller
 {
     public function index(){
-        $profesores = Profesor::paginate();
+        $profesores = Profesor::where('baja',0)->paginate();
         $roles = Roles::get();
         $licencias = Licencias::get();
         return view("profesors/index",['profesores' => $profesores]);
@@ -320,6 +320,17 @@ class ProfesorController extends Controller
                 if($rxpss ){
                     return $rxpss;
                 }
+    }
+    }
+
+    public function delete(Request $request)
+    {
+        if(request()->ajax())
+            {
+        $profesor = Profesor::where('id',$request->id_profesor)->first();
+        $profesor->baja=1;
+        $profesor->save();
+        return route('profesors.index');
     }
     }
 

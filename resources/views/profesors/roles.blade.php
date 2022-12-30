@@ -91,10 +91,15 @@
       @else
       <td></td> 
       @endif
+
+      @if($r->baja == 0)    
       <td> <button type="button" class="btn btn-primary" 
         onClick="openRolModalSem({{$r->id}},'{{$r->nombre_rol}}','{{$r->sit_revista}}')">
         Dias Semanales
       </button></td>
+      @else
+      <td></td> 
+      @endif
       <!-- ModalSem 
     <div class="modal fade" id="rolModalSem{{$r->id}}" tabindex="-1" role="dialog" aria-labelledby="rolModalSemLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">

@@ -1,6 +1,10 @@
 @extends('layouts.app')
-@section('title','HOME PHP')
+@section('title','Escuela Danza')
 
 @section('content')
-    <h1>Home PHP</h1>
+<div class="text-center">
+    <br>
+<h1>ESCUELA MUNICIPAL DE DANZAS JOSE NEGLIA</h1>
+<i class="fa fa-university fa-5x" aria-hidden="true"></i>
+</div>
 @endsection

@@ -74,9 +74,10 @@
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
             <th scope="col">Legajo</th>
-            <th scope="col">Presentes</th>
+            <th scope="col">Es Profesor</th>
             <th scope="col">Ausentes</th>
             <th scope="col">Roles</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -86,9 +87,15 @@
                     <td>{{$profesor->nombre}}</td>
                     <td>{{$profesor->apellido}}</td>
                     <td>{{$profesor->legajo}}</td>
-                    <td><a class="fa fa-calendar"  ></a></td>
+                    <td>
+                      <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" disabled id="customSwitch2" @if ($profesor->es_profesor) checked @endif>
+                      <label class="custom-control-label" for="customSwitch2"></label>
+                      </div>
+                    </td>
                     <td><a class="fa fa-calendar-times" href="{{route('profesors.absents',['id_profesor' => $profesor->id])}}"></a></td>
                     <td><a class="fa fa-graduation-cap" href="{{route('profesors.roles',['id_profesor' => $profesor->id])}}"></a></td>
+                    <td onclick="deleteProf({{$profesor->id}})"><a class="fa fa-times-circle" style="color:red"></a></td>
                   </tr>
             @endforeach
         </tbody>
@@ -148,8 +155,8 @@ function saveProf(id) {
           if( data.status === 422 ) {
             var errors = $.parseJSON(data.responseText);
             $.each(errors.errors, function (key, value) {
-                                $('#alertRolDanger').show();
-                                $('#alertRolDanger').append('<li>'+value+'</li>');
+                                $('.alert-danger').show();
+                                $('.alert-danger').append('<li>'+value+'</li>');
                             });
                         }
                         else
@@ -162,6 +169,33 @@ function saveProf(id) {
         }
     });
            
+    }
+
+    function deleteProf(data) {
+    if(confirm("¿Desea confirmar la eliminacion del profesor?")){
+      var op ="";
+        $.ajax ({
+        headers: {
+        'X-CSRF-Token': '{{ csrf_token() }}',
+        },
+        type: 'post',
+       url:'{{ route("profesors.delete") }}',
+       data:{
+        'id_profesor':data ,
+       }
+      ,
+      success: function(data2){
+        
+          alert('Profesor eliminado con éxito.');
+          window.location.replace(data2);
+       },
+        error: function(){
+          alert('Ha ocurrido un error en la transaccion.');
+          console.log("Error Occurred");
+        }
+    });
+            //alert('test ok');
+        }
     }
 
     </script>
