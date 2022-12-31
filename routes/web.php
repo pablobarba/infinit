@@ -7,6 +7,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\LicenciasController;
 use App\Http\Livewire\Prueb;
+use App\Http\Controllers\LicenciasGralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::controller(ProfesorController::class)->group(function(){
     Route::get('profesors/absents/{id_profesor}', 'absents') -> name('profesors.absents');
     Route::post('profesors/save@filter','save') -> name('profesors.save');
     Route::post('profesors/delete@filter','delete') -> name('profesors.delete');
+    Route::post('profesors/filterProfesors@filter','filterProfesors') -> name('profesors.filterProfesors');
+    Route::get('profesors/filterProfesors@filter','filterProfesors') -> name('profesors.filterProfesors');
     
     Route::post('profesors/licFilterDate@filter','licFilterDate') -> name('profesors.licFilterDate');
     Route::post('profesors/licDelete@filter','licDelete') -> name('profesors.licDelete');
@@ -70,3 +73,11 @@ Route::controller(LicenciasController::class)->group(function(){
     Route::post('licencias/getLicences@filter','getLicences') -> name('licencias.getLicences');
 });
 //licencias
+
+//licencias General
+Route::controller(LicenciasGralController::class)->group(function(){
+    Route::get('licenciasgral', 'index') -> name('licenciasgral.index');
+    Route::post('licenciasgral/licGralFilterDate@filter','licGralFilterDate') -> name('licenciasgral.licGralFilterDate');
+    Route::get('licenciasgral/licGralFilterDate@filter', 'licGralFilterDate') -> name('profesors.licGralFilterDate');
+});
+//licencias General

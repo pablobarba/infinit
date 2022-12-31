@@ -134,4 +134,16 @@ class ReportController extends Controller
         }
         return route('report.index');
     }
+
+    public function report(Request $request)
+    {
+        $sem = $request->date;
+
+        $rxps = vwRolXProfesor::where('baja',0)->get();
+
+        foreach (($rxps) as $lic) {
+            
+        }
+    }
+
 }

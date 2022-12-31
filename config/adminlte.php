@@ -333,6 +333,11 @@ return [
             'url'  => 'report',
             'icon' => 'fas fa-fw fa-bolt',
         ],
+        [
+            'text' => 'Consulta Licencias',
+            'url'  => 'licenciasgral',
+            'icon' => 'fas fa-fw fa-book ',
+        ],
         /*[
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',

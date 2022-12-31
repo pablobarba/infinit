@@ -160,18 +160,6 @@
        }
       ,
       success: function(data2){
-       /* op+='<table id="tableLic" class="table table-striped">';
-        op+=' <thead><tr><th>Licencia</th><th>Fecha</th><th></th></tr></thead>';
-        for(var i=0;i<data2.data.length;i++){
-          op+='<tr>';
-          op+='<td>'+data2.data[i].licencia+'</td><td>'+data2.data[i].fecha+'</td>';
-          
-          op+='<td onclick="deleteLic('+data2.data[i].id+')""> <button type="button" name="deletelic" id="deletelic" class="btn btn-danger fa fa-trash"></button></td>'
-          op+='</tr>';
-        }
-         op+='</table>';
-         $('#tableview').html(op);
-          console.log(data2);*/
          $("#tableview").empty().html(data2);
        },
         error: function(){
@@ -269,17 +257,23 @@ $(document).on('click', '.pagination a', function(event){
 
 function fetch_data(page)
 {
- $.ajax({
-  url:"{{ route("profesors.licFilterDate") }}",
-  data:{
-        'page':page,
-        'legajo':{{$profesor->legajo}} ,
-       },
-  success:function(data)
-  {
-   $('#tableview').html(data);
-  }
- });
+  var from_date = $('#from_date').val();
+  var to_date = $('#to_date').val();
+  
+    $.ajax({
+      url:"{{ route("profesors.licFilterDate") }}",
+      data:{
+        'from_date':from_date, 
+        'to_date':to_date,
+            'page':page,
+            'legajo':{{$profesor->legajo}} ,
+          },
+      success:function(data)
+      {
+      $('#tableview').html(data);
+      }
+    });
+  
 }
 
 });
