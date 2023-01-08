@@ -52,6 +52,9 @@ Route::controller(ReportController::class)->group(function(){
     Route::get('report', 'index') -> name('report.index');
     Route::post('report/getRolByProfesor@filter','getRolByProfesor') -> name('report.getRolByProfesor');
     Route::post('report/saveLicences@filter','saveLicences') -> name('report.saveLicences');
+    Route::get('report/genreport','genreport') -> name('report.genreport');
+    Route::post('report/getreport@filter','getreport') -> name('report.getreport');
+    Route::get('report/getreport@filter','getreport') -> name('report.getreport');
 });
 //reportController
 

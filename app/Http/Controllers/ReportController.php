@@ -10,7 +10,14 @@ use App\Models\RolesXProfesor;
 use App\Models\Profesor;
 use App\Models\vwRolXProfesor;
 use App\Models\logs;
+use App\Models\rolXProfesorSem;
+use App\Models\vwLicenciasXProfesor;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+
+use App\Exports\Export;
+use App\Exports\profExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -29,7 +36,7 @@ class ReportController extends Controller
                     'from_date' => 'required|date',
                     'to_date' => 'required|date|after_or_equal:from_date',
                    ]);*/
-                $rxps = vwRolXProfesor::where('legajo_prof', $request->legajo)->where('baja',0)->paginate(10);
+                $rxps = vwRolXProfesor::where('legajo_prof', $request->legajo)->where('baja', 0)->paginate(10);
             }
         }
         return view("report/rolesByProfesor", ['rxps' => $rxps])->render();
@@ -84,27 +91,20 @@ class ReportController extends Controller
                                     //if (strtoupper($day) == "DOMINGO") {
                                     //   $daysToAdd = 6;
                                     //}
-                                   // $fecIni = $fecIni->addDays($daysToAdd);
-                                    $fecIni = date('Y-m-d',strtotime($request->fecha . "+".$daysToAdd." days"));
+                                    // $fecIni = $fecIni->addDays($daysToAdd);
+                                    $fecIni = date('Y-m-d', strtotime($request->fecha . "+" . $daysToAdd . " days"));
                                     $licXprof->fecha = $fecIni;
-                                    //test2
-                                    $logs = new logs();
-                                    $logs->nombre = "fecINI2: " . $fecIni;
-                                    $logs->save();
-                                    
+
                                     //veo si ya existe licencia por rol prof
-                                    $licXProfTmp = LicenciasXProfesor::where('legajo_prof',$profesors->legajo)->where('id_licencia',$licencia->id)->where('fecha',$fecIni)->where('id_rol_prof',$rolXProf->id)->first();
-                                    if($licXProfTmp)
-                                    {
+                                    $licXProfTmp = LicenciasXProfesor::where('legajo_prof', $profesors->legajo)->where('id_licencia', $licencia->id)->where('fecha', $fecIni)->where('id_rol_prof', $rolXProf->id)->first();
+                                    if ($licXProfTmp) {
                                         $logs = new logs();
                                         $logs->nombre = "ya existe licencia_x_profesor";
                                         $logs->detalle = "licencia_x_profesor: -legajo: " . $profesors->legajo . " -fecha: " . $fecIni . " -licencia: " . $licencia->id . " -rolxprof: " . $rolXProf->id;
                                         $logs->save();
-                                    }
-                                    else{
+                                    } else {
                                         $licXprof->save();
                                     }
-                                    
                                 } else {
                                     $logs = new logs();
                                     $logs->nombre = "No se informo dia";
@@ -135,15 +135,151 @@ class ReportController extends Controller
         return route('report.index');
     }
 
-    public function report(Request $request)
+    public function genreport()
     {
-        $sem = $request->date;
-
-        $rxps = vwRolXProfesor::where('baja',0)->get();
-
-        foreach (($rxps) as $lic) {
-            
-        }
+        return view("report/generateReport");
     }
 
+    //request array feriados && fecha_proceso(lunes)
+    public function getreport(Request $request)
+    {
+        $sem = $request->fecha_proceso;
+
+        #region log
+        $logs = new logs();
+        $logs->nombre = "sem: " . $sem;
+        $logs->save();
+        #endregion
+
+        $collection = new Collection();
+        $rxps = vwRolXProfesor::where('baja', 0)->whereNull('fecha_fin')->orderBy('legajo_prof', 'DESC')->get();
+        
+        $logs = new logs();
+        $logs->nombre = "vwRolXProfesor_count: " . $rxps->count();
+        $logs->save();
+
+        foreach (($rxps) as $rxp) {
+            //por cada rol prof veo dias disponibles
+            //id baja legajo_prof nombre_profesor apellido_profesor nombre_rol sit_revista fecha_fin	
+            $tmp = (object)[
+                'legajo' => $rxp->legajo_prof,
+                'apellido' => $rxp->apellido_profesor,
+                'nombre' => $rxp->nombre_profesor,
+                'puesto' => $rxp->nombre_rol,
+                'sit_revista' => $rxp->sit_revista,
+                'lunes' => "",
+                'martes' => "",
+                'miercoles' => "",
+                'jueves' => "",
+                'viernes' => "",
+                'sabado' => "",
+                'observaciones' => ""
+            ];
+
+            #region ver licencias
+            $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
+            $fecFin = date('Y-m-d', strtotime($request->fecha_proceso . "+" . 6 . " days"));
+            #region log
+            $logs = new logs();
+            $logs->nombre = "fecIni: " . $fecIni;
+            $logs->save();
+            $logs2 = new logs();
+            $logs2->nombre = "fecFin: " . $fecFin;
+            $logs2->save();
+            #endregion
+
+            //falta filtro rol
+            $lxps = vwLicenciasXProfesor::where('legajo_prof', $rxp->legajo_prof)->whereBetween('fecha', [$fecIni, $fecFin])->get();
+            foreach (($lxps) as $lxp) {
+                $day = Carbon::parse($lxp->fecha);
+                $dayName = $day->format('l');
+
+                if ($day->dayOfWeek === Carbon::MONDAY) {
+                    $tmp->lunes = $lxp->nombre_licencia;
+                    $logs = new logs();
+                    $logs->nombre = "MONDAY: " . $tmp->lunes;
+                    $logs->save();
+                }
+                if ($day->dayOfWeek === Carbon::TUESDAY) {
+                    $tmp->martes = $lxp->nombre_licencia;
+                    $logs = new logs();
+                    $logs->nombre = "TUESDAY: " . $tmp->martes;
+                    $logs->save();
+                }
+                if ($day->dayOfWeek === Carbon::WEDNESDAY) {
+                    $tmp->miercoles = $lxp->nombre_licencia;
+                    $logs = new logs();
+                    $logs->nombre = "WEDNESDAY: " . $tmp->miercoles;
+                    $logs->save();
+                }
+                if ($day->dayOfWeek === Carbon::THURSDAY) {
+                    $tmp->jueves = $lxp->nombre_licencia;
+                    $logs = new logs();
+                    $logs->nombre = "THURSDAY: " . $tmp->jueves;
+                    $logs->save();
+                }
+                if ($day->dayOfWeek === Carbon::FRIDAY) {
+                    $tmp->viernes = $lxp->nombre_licencia;
+                    $logs = new logs();
+                    $logs->nombre = "FRIDAY: " . $tmp->viernes;
+                    $logs->save();
+                }
+                if ($day->dayOfWeek === Carbon::SUNDAY) {
+                    $tmp->sabado = $lxp->nombre_licencia;
+                    $logs = new logs();
+                    $logs->nombre = "SUNDAY: " . $tmp->sabado;
+                    $logs->save();
+                }
+            }
+            #endregion
+
+            #region ver feriados
+            #endregion
+
+            #region ver dias no disponibles
+            $rxpsem = rolXProfesorSem::where('id_rol_prof', $rxp->id)->where('baja', 0)->first();
+            $logs = new logs();
+            $logs->nombre = "rxpsem: " . $rxp->apellido_profesor ;
+            $logs->save();
+            if ($rxpsem) {
+                $logs = new logs();
+            $logs->nombre = "rxpsem: IN" . " count: " . $rxpsem->count();
+            $logs->detalle = "rxpsem: IN" .  json_encode($rxpsem);          
+            $logs->save();
+
+            $logs = new logs();
+            $logs->nombre = "rxpsem: LUNES" . $rxpsem->lunes;    
+            $logs->save();
+                if ($rxpsem->lunes == 1) {
+                    $tmp->lunes = "NC-No Corresponde";
+                }
+                if ($rxpsem->martes == 1) {
+                    $tmp->martes = "NC-No Corresponde";
+                }
+                if ($rxpsem->miercoles == 1) {
+                    $tmp->miercoles = "NC-No Corresponde";
+                }
+                if ($rxpsem->jueves == 1) {
+                    $tmp->jueves = "NC-No Corresponde";
+                }
+                if ($rxpsem->viernes == 1) {
+                    $tmp->viernes = "NC-No Corresponde";
+                }
+                if ($rxpsem->sabado == 1) {
+                    $tmp->sabado = "NC-No Corresponde";
+                }
+            }
+            #endregion
+            $collection->push($tmp);
+        }
+        
+        $json = json_encode($collection);
+
+        return Excel::download(new profExport($collection), 'invoices.xlsx');
+        
+        //return Excel::download(new Export($collection), 'test.xlsx');
+        //return $json;
+    }
+
+    
 }

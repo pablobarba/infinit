@@ -338,6 +338,11 @@ return [
             'url'  => 'licenciasgral',
             'icon' => 'fas fa-fw fa-book ',
         ],
+        [
+            'text' => 'Generar Reporte',
+            'url'  => 'report/genreport',
+            'icon' => 'fas fa-fw fa-download',
+        ],
         /*[
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
