@@ -20,42 +20,42 @@
                                 <div class="form-row">
                                     <div class="form-group col-lg-12 col-md-6">
                                         <input type="checkbox" class="custom-control-input"
-                                            id="mondayModalFrm" @if ($r->lunes) checked @endif>
+                                            id="mondayModalFrm" @if (!$r->lunes) checked @endif>
                                         <label class="custom-control-label" for="mondayModalFrm">Lunes</label>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-lg-12 col-md-6">
                                         <input type="checkbox" class="custom-control-input" id="tuesdayModalFrm"
-                                            @if ($r->martes) checked @endif>
+                                            @if (!$r->martes) checked @endif>
                                         <label class="custom-control-label" for="tuesdayModalFrm">Martes</label>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-lg-12 col-md-6">
                                         <input type="checkbox" class="custom-control-input"
-                                            id="wenesdayModalFrm" @if ($r->miercoles) checked @endif>
+                                            id="wenesdayModalFrm" @if (!$r->miercoles) checked @endif>
                                         <label class="custom-control-label" for="wenesdayModalFrm">Miercoles</label>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-lg-12 col-md-6">
                                         <input type="checkbox" class="custom-control-input"
-                                            id="thursdayModalFrm" @if ($r->jueves) checked @endif>
+                                            id="thursdayModalFrm" @if (!$r->jueves) checked @endif>
                                         <label class="custom-control-label" for="thursdayModalFrm">Jueves</label>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-lg-12 col-md-6">
                                         <input type="checkbox" class="custom-control-input"
-                                            id="fridayModalFrm" @if ($r->viernes) checked @endif>
+                                            id="fridayModalFrm" @if (!$r->viernes) checked @endif>
                                         <label class="custom-control-label" for="fridayModalFrm">Viernes</label>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-lg-12 col-md-6">
                                         <input type="checkbox" class="custom-control-input"
-                                            id="saturdayModalFrm" @if ($r->sabado) checked @endif>
+                                            id="saturdayModalFrm" @if (!$r->sabado) checked @endif>
                                         <label class="custom-control-label" for="saturdayModalFrm">Sabado</label>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                             <br>
                         </form>
                         <div class="alert alert-warning " role="alert">
-                          Habilitar los dias que no corresponda asistencia. 
+                          Deshabilitar los dias que no corresponda asistencia. 
                           <br>
                           Por defecto se establece asistencia.
                         </div>
@@ -83,26 +83,26 @@
 
 <style>
 .custom-control-input:focus~.custom-control-label::before {
-  border-color: red !important;
+  border-color: green !important;
   box-shadow: 0 0 0 0.2rem rgba(255, 47, 69, 0.25) !important;
 }
 
 .custom-control-input:checked~.custom-control-label::before {
-  border-color: red !important;
-  background-color: red !important;
+  border-color: green !important;
+  background-color: green !important;
 }
 
 .custom-control-input:active~.custom-control-label::before {
-  background-color: red !important;
-  border-color: red !important;
+  background-color: green !important;
+  border-color: green !important;
 }
 
 .custom-control-input:focus:not(:checked)~.custom-control-label::before {
-  border-color: red !important;
+  border-color: green !important;
 }
 
 .custom-control-input-green:not(:disabled):active~.custom-control-label::before {
-  background-color: red !important;
-  border-color: red !important;
+  background-color: green !important;
+  border-color: green !important;
 }
 </style>

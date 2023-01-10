@@ -19,7 +19,7 @@
           <th colspan="20">DEPARTAMENTO: ESCUELA MUNICIPAL DE DANZAS JOSE NEGLIA</th>
           </tr>
           <tr>
-            <th colspan="20">SEMANA: ?</th>
+            <th colspan="20">SEMANA: {{$dayReport}}</th>
             </tr>
            
   </tbody>

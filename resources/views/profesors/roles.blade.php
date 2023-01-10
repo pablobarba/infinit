@@ -218,12 +218,12 @@
 <script>
 function saveRolSem(id,id_rol_prof) {
       var op ="";
-      var monday=$('#mondayModalFrm').is(":checked");
-      var tuesday=$('#tuesdayModalFrm').is(":checked");
-      var wenesday=$('#wenesdayModalFrm').is(":checked");
-      var thursday=$('#thursdayModalFrm').is(":checked");
-      var friday=$('#fridayModalFrm').is(":checked");
-      var saturday=$('#saturdayModalFrm').is(":checked");
+      var monday=!($('#mondayModalFrm').is(":checked"));
+      var tuesday=!($('#tuesdayModalFrm').is(":checked"));
+      var wenesday=!($('#wenesdayModalFrm').is(":checked"));
+      var thursday=!($('#thursdayModalFrm').is(":checked"));
+      var friday=!($('#fridayModalFrm').is(":checked"));
+      var saturday=!($('#saturdayModalFrm').is(":checked"));
       var dataO = 
       {
         id:id,

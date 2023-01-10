@@ -153,10 +153,21 @@ class ReportController extends Controller
 
         $collection = new Collection();
         $rxps = vwRolXProfesor::where('baja', 0)->whereNull('fecha_fin')->orderBy('legajo_prof', 'DESC')->get();
-        
+
         $logs = new logs();
         $logs->nombre = "vwRolXProfesor_count: " . $rxps->count();
         $logs->save();
+
+        $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
+        $fecFin = date('Y-m-d', strtotime($request->fecha_proceso . "+" . 5 . " days"));
+        #region log
+        $logs = new logs();
+        $logs->nombre = "fecIni: " . $fecIni;
+        $logs->save();
+        $logs2 = new logs();
+        $logs2->nombre = "fecFin: " . $fecFin;
+        $logs2->save();
+        #endregion
 
         foreach (($rxps) as $rxp) {
             //por cada rol prof veo dias disponibles
@@ -177,19 +188,8 @@ class ReportController extends Controller
             ];
 
             #region ver licencias
-            $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
-            $fecFin = date('Y-m-d', strtotime($request->fecha_proceso . "+" . 6 . " days"));
-            #region log
-            $logs = new logs();
-            $logs->nombre = "fecIni: " . $fecIni;
-            $logs->save();
-            $logs2 = new logs();
-            $logs2->nombre = "fecFin: " . $fecFin;
-            $logs2->save();
-            #endregion
-
             //falta filtro rol
-            $lxps = vwLicenciasXProfesor::where('legajo_prof', $rxp->legajo_prof)->where('id_rol_prof',$rxp->id)->whereBetween('fecha', [$fecIni, $fecFin])->get();
+            $lxps = vwLicenciasXProfesor::where('legajo_prof', $rxp->legajo_prof)->where('id_rol_prof', $rxp->id)->whereBetween('fecha', [$fecIni, $fecFin])->get();
             foreach (($lxps) as $lxp) {
                 $day = Carbon::parse($lxp->fecha);
                 $dayName = $day->format('l');
@@ -239,17 +239,17 @@ class ReportController extends Controller
             #region ver dias no disponibles
             $rxpsem = rolXProfesorSem::where('id_rol_prof', $rxp->id)->where('baja', 0)->first();
             $logs = new logs();
-            $logs->nombre = "rxpsem: " . $rxp->apellido_profesor ;
+            $logs->nombre = "rxpsem: " . $rxp->apellido_profesor;
             $logs->save();
             if ($rxpsem) {
                 $logs = new logs();
-            $logs->nombre = "rxpsem: IN" . " count: " . $rxpsem->count();
-            $logs->detalle = "rxpsem: IN" .  json_encode($rxpsem);          
-            $logs->save();
+                $logs->nombre = "rxpsem: IN" . " count: " . $rxpsem->count();
+                $logs->detalle = "rxpsem: IN" .  json_encode($rxpsem);
+                $logs->save();
 
-            $logs = new logs();
-            $logs->nombre = "rxpsem: LUNES" . $rxpsem->lunes;    
-            $logs->save();
+                $logs = new logs();
+                $logs->nombre = "rxpsem: LUNES" . $rxpsem->lunes;
+                $logs->save();
                 if ($rxpsem->lunes == 1) {
                     $tmp->lunes = "NC-No Corresponde";
                 }
@@ -272,14 +272,47 @@ class ReportController extends Controller
             #endregion
             $collection->push($tmp);
         }
-        
+
+        #region calcDay
+        $dayIni =  date('d', strtotime($fecIni));
+        $dayFin =  date('d', strtotime($fecFin));
+
+        $idxFec = Carbon::parse($fecIni);
+        if ($idxFec->month == 1) {
+            $monthRep = "ENERO";
+        } else if ($idxFec->month == 2) {
+            $monthRep = "FEBRERO";
+        } else if ($idxFec->month == 3) {
+            $monthRep = "MARZO";
+        } else if ($idxFec->month == 4) {
+            $monthRep = "ABRIL";
+        } else if ($idxFec->month == 5) {
+            $monthRep = "MAYO";
+        } else if ($idxFec->month == 6) {
+            $monthRep = "JUNIO";
+        } else if ($idxFec->month == 7) {
+            $monthRep = "JULIO";
+        } else if ($idxFec->month == 8) {
+            $monthRep = "AGOSTO";
+        } else if ($idxFec->month == 9) {
+            $monthRep = "SEPTIEMBRE";
+        } else if ($idxFec->month == 10) {
+            $monthRep = "OCTUBRE";
+        } else if ($idxFec->month == 11) {
+            $monthRep = "NOVIEMBRE";
+        } else if ($idxFec->month == 12) {
+            $monthRep = "DICIEMBRE";
+        }
+
+        $yearRep = $idxFec->year;
+        $dayReport = "desde" . " " . $dayIni . " al " . $dayFin . " de " . $monthRep . " del " . $yearRep;
+        #endregion
+
         $json = json_encode($collection);
 
-        return Excel::download(new profExport($collection), 'invoices.xlsx');
-        
+        return Excel::download(new profExport($collection,$dayReport), 'invoices.xlsx');
+
         //return Excel::download(new Export($collection), 'test.xlsx');
         //return $json;
     }
-
-    
 }

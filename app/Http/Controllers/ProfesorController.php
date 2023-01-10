@@ -217,7 +217,7 @@ class ProfesorController extends Controller
             $result = json_decode($request);
             if ($request->data['id'] > 0) {
                 $idRolSem = $request->data['id'];
-                $rxpss = rolXProfesorSem::find($idRolSem)->first();
+                $rxpss = rolXProfesorSem::where('id',$idRolSem)->first();
             }
 
             $rxpss->id_rol_prof = $request->data['id_rol_prof'];

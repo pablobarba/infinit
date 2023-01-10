@@ -67,7 +67,7 @@
         $(function() {
             var selectedDates = [];
             datePicker = $('[id*=txtdate]').datepicker({
-                startDate: new Date(),
+                startDate: null,
                 minDate: 0,
                 multidate: false,
                 format: "mm/dd/yyyy",

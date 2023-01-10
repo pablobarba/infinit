@@ -16,16 +16,18 @@ class profExport implements FromView, WithEvents
 {
     use RegistersEventListeners;
     private $collection;
+    private $dayReport;
 
-    public function __construct($collection)
+    public function __construct($collection,$dayReport)
     {
 
         $this->collection = $collection;
+        $this->dayReport = $dayReport;
     }
 
     public function view(): View
     {
-        return view("report/reportFile", ['collection' => $this->collection]);
+        return view("report/reportFile", ['collection' => $this->collection,'dayReport' => $this->dayReport]);
     }
 
     public static function afterSheet(AfterSheet $event)
