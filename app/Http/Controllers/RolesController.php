@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\Roles;
+use App\Models\RolesXProfesor;
+use App\Models\vwRolXProfesor;
 use Illuminate\Http\Request;
 
 class RolesController extends Controller
@@ -103,6 +105,13 @@ class RolesController extends Controller
     {
         if(request()->ajax())
         {
+            $rxp = RolesXProfesor::where('id_rol',$request->id_rol)->where('baja',0)->first();
+            if($rxp){
+                $errors= [
+                    "No se puede borrar el rol, hay asignaciones vigentes."
+                ];
+                return response()->json(['errors'=>$errors], 422);
+            }
             if($request->id_rol>0){
                 $idRol = $request->id_rol;
                 $rol = Roles::where('id', $idRol)->first();

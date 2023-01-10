@@ -5,6 +5,7 @@
     <div class="container">
         <h1>Generar Reporte</h1>
         <input type="text" class="form-control" id="txtdate" placeholder="Seleccione Fecha Semanal" />
+        <div class="alert alert-danger" style="display:none"></div>
         <br>
         <div class = "card p-3 bg-light">
             <div class="alert alert-warning " role="alert">
@@ -57,8 +58,9 @@
         <br>
 
         {{--<button class="btn btn-danger fa fa-download" onClick="genReport()"></button>--}}
-        
-        <a class="btn btn-danger fa fa-download" onClick="genReport2()" ></a>
+
+        <a class="btn btn-danger" onClick="genReport2()" ><i class="fa fa-download"></i> Reporte de profesores </a>
+        <a class="btn btn-primary" onClick="genReport2()" ><i class="fa fa-download"></i> Reporte de auxiliares </a>
     </div>
 
     <script>
@@ -79,7 +81,11 @@
         });
 
         function genReport2() {
+            $('.alert-danger').hide();
+            $('#licModal').modal('hide');
             var dateSemFrm = document.getElementById("txtdate").value;
+
+            if(dateSemFrm != "" && dateSemFrm !=null){
              $.ajax ({
               headers: {
               'X-CSRF-Token': '{{ csrf_token() }}',
@@ -115,6 +121,11 @@
           }
           }
           );
+        }
+        else{
+            $('.alert-danger').show();
+            $('.alert-danger').append('<li>Se debe establecer dia semanal</li>');
+        }
         } 
 
         function genReport() {

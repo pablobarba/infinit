@@ -189,7 +189,7 @@ class ReportController extends Controller
             #endregion
 
             //falta filtro rol
-            $lxps = vwLicenciasXProfesor::where('legajo_prof', $rxp->legajo_prof)->whereBetween('fecha', [$fecIni, $fecFin])->get();
+            $lxps = vwLicenciasXProfesor::where('legajo_prof', $rxp->legajo_prof)->where('id_rol_prof',$rxp->id)->whereBetween('fecha', [$fecIni, $fecFin])->get();
             foreach (($lxps) as $lxp) {
                 $day = Carbon::parse($lxp->fecha);
                 $dayName = $day->format('l');

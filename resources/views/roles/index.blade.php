@@ -3,7 +3,9 @@
 
 @section('content')
     <div class="container"> 
-      
+    <div id="alert_param_rol" class="alert alert-danger alert-dismissible fade show" style="display:none">
+      <button class="btn close"  onClick="hideAlert()">&times;</button>
+    </div>
     <h1>Roles</h1>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" onClick="openRolModalRol(-1,'')" id="rolModalbtn">
@@ -123,6 +125,7 @@ function openRolModalRol(data_id,data_name)
     }
 
     function deleteRol(id) {
+      if (confirm("¿Desea confirmar la eliminacion del rol?")) {
        $.ajax ({
         headers: {
         'X-CSRF-Token': '{{ csrf_token() }}',
@@ -138,11 +141,28 @@ function openRolModalRol(data_id,data_name)
           window.location.replace(data2);
        },
         error: function(data){
-          alert('Ha ocurrido un error en la transaccion.');                        
-          console.log("Error Occurred: "+data);
+          if (data.status === 422) {
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors.errors, function(key, value) {
+                            $('.alert-danger').show();
+                            $('.alert-danger').append('<li>' + value + '</li>');
+                        });
+                    } else {
+                        alert('Ha ocurrido un error en la transaccion.');
+                        $('.alert-danger').hide();
+                    }
         }
     });
-           
+  }  
     }
+
+    function hideAlert() {
+      var listElements = document.querySelectorAll("#alert_param_rol li");
+
+      for (var i = 0; (li = listElements[i]); i++) {
+        li.parentNode.removeChild(li);
+      }
+      $('.alert-danger').hide();
+    };
     </script>
 @endsection
