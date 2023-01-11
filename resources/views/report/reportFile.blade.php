@@ -1,25 +1,24 @@
 <table class="table table-dark">
   <thead>
     <tr>
-      <th colspan="20"></th>
-      <th colspan="20"></th>
-      <th colspan="20"></th>
-      <th colspan="20"></th>
-      <th colspan="20"></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
      <tr>
-      <th colspan="20"><span style="font-weight: bold">SECRETARIA: SECRETARÍA DE EDUCACIÓN, CULTURA Y DEPORTE</th>
+      <th colspan="15"><span style="font-weight: bold">SECRETARIA: SECRETARÍA DE EDUCACIÓN, CULTURA Y DEPORTE</th>
       </tr>
       <tr>
-        <th colspan="20">DIRECCIÓN:	DE EDUCACION</th>
+        <th colspan="15">DIRECCIÓN:	DE EDUCACION</th>
         </tr>
         <tr>
-          <th colspan="20">DEPARTAMENTO: ESCUELA MUNICIPAL DE DANZAS JOSE NEGLIA</th>
+          <th colspan="15">DEPARTAMENTO: ESCUELA MUNICIPAL DE DANZAS JOSE NEGLIA</th>
           </tr>
           <tr>
-            <th colspan="20">SEMANA: {{$dayReport}}</th>
+            <th colspan="15">SEMANA: {{$dayReport}}</th>
             </tr>
            
   </tbody>
