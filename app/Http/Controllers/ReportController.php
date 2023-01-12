@@ -54,7 +54,8 @@ class ReportController extends Controller
             foreach (json_decode($request->licencias) as $lic) {
                 $profesors = Profesor::where('legajo', $lic->profesor)->first();
                 $licencia = Licencias::where('id', $lic->licenciaId)->first();
-                $rolXProf = Licencias::where('id', $lic->rolId)->first();
+                
+                $rolXProf = vwRolXProfesor::where('id', $lic->rolId)->first();
 
                 $fecIni = $request->fecha;
 
@@ -63,13 +64,16 @@ class ReportController extends Controller
                 if ($fecIni) {
                     if ($profesors) {
                         $licXprof->legajo_prof = $profesors->legajo;
+                        
                         if ($licencia) {
                             $licXprof->id_licencia = $licencia->id;
+                            
                             if ($rolXProf) {
                                 $licXprof->id_rol_prof = $lic->rolId;
                                 if ($lic->dia) {
                                     $day = $lic->dia;
                                     $daysToAdd = 0;
+                                    
                                     if (strtoupper($day) == "LUNES") {
                                         $daysToAdd = 0;
                                     }
@@ -145,29 +149,11 @@ class ReportController extends Controller
     {
         $sem = $request->fecha_proceso;
 
-        #region log
-        $logs = new logs();
-        $logs->nombre = "sem: " . $sem;
-        $logs->save();
-        #endregion
-
         $collection = new Collection();
         $rxps = vwRolXProfesor::where('baja', 0)->whereNull('fecha_fin')->orderBy('legajo_prof', 'DESC')->get();
 
-        $logs = new logs();
-        $logs->nombre = "vwRolXProfesor_count: " . $rxps->count();
-        $logs->save();
-
         $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
         $fecFin = date('Y-m-d', strtotime($request->fecha_proceso . "+" . 5 . " days"));
-        #region log
-        $logs = new logs();
-        $logs->nombre = "fecIni: " . $fecIni;
-        $logs->save();
-        $logs2 = new logs();
-        $logs2->nombre = "fecFin: " . $fecFin;
-        $logs2->save();
-        #endregion
 
         foreach (($rxps) as $rxp) {
             //por cada rol prof veo dias disponibles
@@ -190,45 +176,28 @@ class ReportController extends Controller
             #region ver licencias
             //falta filtro rol
             $lxps = vwLicenciasXProfesor::where('legajo_prof', $rxp->legajo_prof)->where('id_rol_prof', $rxp->id)->whereBetween('fecha', [$fecIni, $fecFin])->get();
+
             foreach (($lxps) as $lxp) {
                 $day = Carbon::parse($lxp->fecha);
                 $dayName = $day->format('l');
 
                 if ($day->dayOfWeek === Carbon::MONDAY) {
                     $tmp->lunes = $lxp->nombre_licencia;
-                    $logs = new logs();
-                    $logs->nombre = "MONDAY: " . $tmp->lunes;
-                    $logs->save();
                 }
                 if ($day->dayOfWeek === Carbon::TUESDAY) {
                     $tmp->martes = $lxp->nombre_licencia;
-                    $logs = new logs();
-                    $logs->nombre = "TUESDAY: " . $tmp->martes;
-                    $logs->save();
                 }
                 if ($day->dayOfWeek === Carbon::WEDNESDAY) {
                     $tmp->miercoles = $lxp->nombre_licencia;
-                    $logs = new logs();
-                    $logs->nombre = "WEDNESDAY: " . $tmp->miercoles;
-                    $logs->save();
                 }
                 if ($day->dayOfWeek === Carbon::THURSDAY) {
                     $tmp->jueves = $lxp->nombre_licencia;
-                    $logs = new logs();
-                    $logs->nombre = "THURSDAY: " . $tmp->jueves;
-                    $logs->save();
                 }
                 if ($day->dayOfWeek === Carbon::FRIDAY) {
                     $tmp->viernes = $lxp->nombre_licencia;
-                    $logs = new logs();
-                    $logs->nombre = "FRIDAY: " . $tmp->viernes;
-                    $logs->save();
                 }
-                if ($day->dayOfWeek === Carbon::SUNDAY) {
+                if ($day->dayOfWeek === Carbon::SATURDAY) {
                     $tmp->sabado = $lxp->nombre_licencia;
-                    $logs = new logs();
-                    $logs->nombre = "SUNDAY: " . $tmp->sabado;
-                    $logs->save();
                 }
             }
             #endregion
@@ -242,14 +211,6 @@ class ReportController extends Controller
             $logs->nombre = "rxpsem: " . $rxp->apellido_profesor;
             $logs->save();
             if ($rxpsem) {
-                $logs = new logs();
-                $logs->nombre = "rxpsem: IN" . " count: " . $rxpsem->count();
-                $logs->detalle = "rxpsem: IN" .  json_encode($rxpsem);
-                $logs->save();
-
-                $logs = new logs();
-                $logs->nombre = "rxpsem: LUNES" . $rxpsem->lunes;
-                $logs->save();
                 if ($rxpsem->lunes == 1) {
                     $tmp->lunes = "NC-No Corresponde";
                 }

@@ -48,7 +48,7 @@
                     <option value="">--Por favor seleccionar una opcion--</option>
                     @foreach($roles as $rol)
                         <option value="{{ $rol->id }}">
-                            {{ $rol->nombre_rol }}
+                            {{ $rol->nombre_rol }} - {{$rol->sit_revista}}
                         </option>
                 
                     @endforeach

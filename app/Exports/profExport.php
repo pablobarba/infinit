@@ -138,11 +138,13 @@ class profExport implements FromView, WithEvents
         $active_sheet->getHeaderFooter()
         ->setOddFooter('&P - AGENTE RESPONSABLE LEG. 145425 FIRMA Y SELLO----------DIRECTOR DEL AREA----------FIRMA Y SELLO');
 
-        //11
         $toRow = 11 + $event->getConcernable()->collection->count() + 1;
         //dd($toRow);
         $active_sheet->getPageSetup()->setPrintArea('A1:S'.$toRow);
 
         $active_sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 11);
+
+        $active_sheet->getStyle('A12:S'.$toRow)->getAlignment()->setWrapText(true);
+        $active_sheet->setPrintGridlines(true);
     }
 }
