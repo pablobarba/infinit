@@ -27,6 +27,8 @@ return new class extends Migration
             $table->boolean('jueves');
             $table->boolean('viernes');
             $table->boolean('sabado');
+            $table->timestamps(); //created_at updated_at
+            $table->softDeletes();
         });
     }
 

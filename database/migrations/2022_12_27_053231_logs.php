@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('logs',function(Blueprint $table){
             $table->id();
-            $table->timestamps(); //created_at updated_at
-    
             $table->string('nombre',100);
             $table->string('detalle',500)->nullable();
+            $table->timestamps(); //created_at updated_at
+            $table->softDeletes();
         });
     }
 

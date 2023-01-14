@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('apellido',50);
             $table->integer('legajo')->unique();
             $table->boolean('es_profesor');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
