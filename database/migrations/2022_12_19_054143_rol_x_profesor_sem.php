@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('rol_x_profesor_sem',function(Blueprint $table){
             $table->id();
             $table->boolean('baja');
-            $table->timestamps(); //created_at updated_at
     
             $table->unsignedBigInteger('id_rol_prof');
             $table->foreign('id_rol_prof')->references('id')->on('roles_x_profesor')->onDelete('cascade');

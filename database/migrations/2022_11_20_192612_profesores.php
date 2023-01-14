@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('profesores',function(Blueprint $table){
             $table->id();
             $table->boolean('baja');
-            $table->timestamps(); //created_at updated_at
             $table->string('nombre',50);
             $table->string('apellido',50);
             $table->integer('legajo')->unique();
