@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-    {{--
+    
     <table class="table">
         <thead class="thead-dark">
           <tr>
@@ -112,7 +112,7 @@
       </table>
       <div class="d-flex justify-content-center">
         {{ $profesores->links() }}
---}}
+
     <div id="tableview">
     </div>
     </div>

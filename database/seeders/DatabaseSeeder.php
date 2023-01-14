@@ -89,5 +89,6 @@ class DatabaseSeeder extends Seeder
         $lxp2->fecha = Carbon::createFromDate(2022,07,23)->toDateTimeString();
         $lxp2->baja = 0;
         $lxp2->save();
+        $this->call(ProfesoresTableSeeder::class);
     }
 }
