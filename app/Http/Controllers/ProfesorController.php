@@ -26,7 +26,7 @@ class ProfesorController extends Controller
         $licencias = Licencias::get();
         return view("profesors/index", ['profesores' => $profesores]);
     }
-    
+
     public function create()
     {
         return view("profesors/create");
@@ -41,7 +41,7 @@ class ProfesorController extends Controller
     {
         $profesor = Profesor::find($id_profesor);
         $roles = vwRolXProfesor::where('legajo_prof', $profesor->legajo)->get();
-        $licencias = Licencias::where('baja',0)->get();
+        $licencias = Licencias::where('baja', 0)->get();
         $lxps = vwLicenciasXProfesor::where('legajo_prof', $profesor->legajo)->where('baja', 0)->orderByDesc('fecha')->paginate(10);
 
         return view("profesors/absents", ['lxps' => $lxps, 'profesor' => $profesor, 'roles' => $roles, 'licencias' => $licencias]);
@@ -58,11 +58,11 @@ class ProfesorController extends Controller
             if ($search && ($search != "" || $search != " ")) {
                 $profesores = Profesor::where('nombre', 'like', '%' . $search . '%')->orWhere('apellido', 'like', '%' . $search . '%')
                     ->orWhere('legajo', 'like', '%' . $search . '%')->paginate(15);
-                    return view("profesors/filterProfesors", ['profesores' => $profesores])->render();
+                return view("profesors/filterProfesors", ['profesores' => $profesores])->render();
             }
         }
         $profesores = Profesor::paginate(15);
-        
+
 
         return view("profesors/filterProfesors", ['profesores' => $profesores])->render();
     }
@@ -132,7 +132,7 @@ class ProfesorController extends Controller
     {
         $profesor = Profesor::find($id_profesor);
         $rxps = vwRolXProfesor::where('legajo_prof', $profesor->legajo)->get();
-        $roles = Roles::where('baja',0)->get();
+        $roles = Roles::where('baja', 0)->get();
         return view("profesors/roles", ['rxps' => $rxps, 'profesor' => $profesor, 'roles' => $roles]);
     }
 
@@ -217,7 +217,7 @@ class ProfesorController extends Controller
             $result = json_decode($request);
             if ($request->data['id'] > 0) {
                 $idRolSem = $request->data['id'];
-                $rxpss = rolXProfesorSem::where('id',$idRolSem)->first();
+                $rxpss = rolXProfesorSem::where('id', $idRolSem)->first();
             }
 
             $rxpss->id_rol_prof = $request->data['id_rol_prof'];
@@ -255,53 +255,34 @@ class ProfesorController extends Controller
                 return response()->json(['errors' => $errors], 422);
             }
             //
+            $idP = $request->data['id'];
             $name = $request->data['nombre'];
             $lastname = $request->data['apellido'];
             $legajo = $request->data['legajo'];
             $isProfesor = $request->data['es_profesor'];
-
-            /* if($request->data['id']>0){
-            $idRol = $request->data['id'];
-            
-            $rxp = Roles::where('codigo', $code)->first();
-            if($rxp){
-                if($rxp->id != $idRol){
-                $errors= [
-                    "El codigo ya existe"
-                ];
-                return response()->json(['errors'=>$errors], 422);
+            if ($idP < 1) {
+                $rxp = Profesor::where('legajo', $legajo)->first();
+                if ($rxp) {
+                    $errors = [
+                        "El legajo ya existe"
+                    ];
+                    return response()->json(['errors' => $errors], 422);
+                }
+                $profesor->baja = 0;
+                $profesor->nombre = $name;
+                $profesor->apellido = $lastname;
+                $profesor->legajo = $legajo;
+                $profesor->es_profesor = $request->data['es_profesor'] == 'true' ? 1 : 0;
+            } else {
+                $profesor = Profesor::where('id', $idP)->first();
+                $profesor->nombre = $name;
+                $profesor->apellido = $lastname;
+                $profesor->es_profesor = $request->data['es_profesor'] == 'true' ? 1 : 0;
             }
-            }
-
-            $rol = Roles::where('id', $idRol)->first();
-            if($rol)
-            {
-            $rol->nombre = $name;
-            $rol->codigo = $code;
-            }
-            $rol->save();
-            return route('roles.index');
-        }
-        else{*/
-            //si es rol nuevo
-
-            //verifico si rol ya existe
-            $rxp = Profesor::where('legajo', $legajo)->first();
-            if ($rxp) {
-                $errors = [
-                    "El legajo ya existe"
-                ];
-                return response()->json(['errors' => $errors], 422);
-            }
-            $profesor->baja = 0;
-            $profesor->nombre = $name;
-            $profesor->apellido = $lastname;
-            $profesor->legajo = $legajo;
-            $profesor->legajo = $legajo;
-            $profesor->es_profesor = $request->data['es_profesor'] == 'true' ? 1 : 0;
-
             $profesor->save();
+
             return route('profesors.index');
+
             //}
 
         }
@@ -334,5 +315,22 @@ class ProfesorController extends Controller
         $profesor = Profesor::where('legajo', $request->legajo)->first();
         $rol->delete();
         return route('profesors.roles', ['id_profesor' => $profesor->id]);
+    }
+
+    public function profCreate(Request $request)
+    {
+        if (request()->ajax()) {
+            $prof = null;
+            if ($request->id > 0) {
+                $prof = Profesor::where('id', $request->id)->first();
+            }
+            if ($prof) {
+                return view("profesors/profesorAbm", ['prof' => $prof])->render();
+            } else {
+                $prof = new  Profesor();
+                $prof->id = 0;
+                return view("profesors/profesorAbm", ['prof' => $prof])->render();
+            }
+        }
     }
 }

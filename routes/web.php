@@ -32,6 +32,7 @@ Route::controller(ProfesorController::class)->group(function(){
     Route::post('profesors/delete@filter','delete') -> name('profesors.delete');
     Route::post('profesors/filterProfesors@filter','filterProfesors') -> name('profesors.filterProfesors');
     Route::get('profesors/filterProfesors@filter','filterProfesors') -> name('profesors.filterProfesors');
+    Route::post('profesors/profCreate@filter','profCreate') -> name('profesors.profCreate');
     
     Route::post('profesors/licFilterDate@filter','licFilterDate') -> name('profesors.licFilterDate');
     Route::post('profesors/licDelete@filter','licDelete') -> name('profesors.licDelete');

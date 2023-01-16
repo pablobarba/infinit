@@ -9,6 +9,7 @@
         <th scope="col">Ausentes</th>
         <th scope="col">Roles</th>
         <th scope="col">Activo</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +34,7 @@
                 <label class="custom-control-label" for="activeProf{{$profesor->id}}"></label>
                 </div>
               </td>
+              <td><a class="fa fa-edit" onClick="openProfModal({{$profesor->id}})"></a></td>
               </tr>
         @endforeach
     </tbody>
