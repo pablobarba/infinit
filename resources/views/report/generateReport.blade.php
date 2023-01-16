@@ -59,8 +59,8 @@
 
         {{--<button class="btn btn-danger fa fa-download" onClick="genReport()"></button>--}}
 
-        <a class="btn btn-danger" onClick="genReport2()" ><i class="fa fa-download"></i> Reporte de profesores </a>
-        <a class="btn btn-primary" onClick="genReport2()" ><i class="fa fa-download"></i> Reporte de auxiliares </a>
+        <a class="btn btn-danger" onClick="genReport2(1)" ><i class="fa fa-download"></i> Reporte de profesores </a>
+        <a class="btn btn-primary" onClick="genReport2(0)" ><i class="fa fa-download"></i> Reporte de auxiliares </a>
     </div>
 
     <script>
@@ -80,7 +80,7 @@
             });
         });
 
-        function genReport2() {
+        function genReport2(repProf) {
             $('.alert-danger').hide();
             $('#licModal').modal('hide');
             var dateSemFrm = document.getElementById("txtdate").value;
@@ -98,6 +98,7 @@
              data:{
               'fecha_proceso':dateSemFrm, 
               'feriados':[],
+              'repProf':repProf,
              },
     success: function(result, status, xhr) {
 

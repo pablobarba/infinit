@@ -21,6 +21,7 @@ return new class extends Migration
         , pro.nombre as nombre_profesor
         , pro.apellido as apellido_profesor 
         , pro.baja as baja_pro
+        , pro.es_profesor as es_profesor
         , rol.nombre as nombre_rol
         , rxp.sit_revista
         ,rxp.fecha_fin

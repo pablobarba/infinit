@@ -154,9 +154,10 @@ class ReportController extends Controller
         $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
         $fecFin = date('Y-m-d', strtotime($request->fecha_proceso . "+" . 5 . " days"));
 
+        $isprof = $request->repProf;
         //obtengo roles sin fecha_fin y con fecha fin en rango
-        $rxps1 = vwRolXProfesor::where('baja_pro',0)->whereNull('fecha_fin')->get();
-        $rxps1_2 = vwRolXProfesor::where('baja_pro',0)->where('fecha_fin', '>', $fecFin)->get();
+        $rxps1 = vwRolXProfesor::where('baja_pro',0)->where('es_profesor',$isprof)->whereNull('fecha_fin')->get();
+        $rxps1_2 = vwRolXProfesor::where('baja_pro',0)->where('es_profesor',$isprof)->where('fecha_fin', '>', $fecFin)->get();
         $rxps1 = $rxps1->merge($rxps1_2);
 
         $rxps2 = vwRolXProfesor::where('baja', 0)->whereBetween('fecha_fin', [$fecIni, $fecFin])->get();
@@ -185,7 +186,7 @@ class ReportController extends Controller
 
             #region ver licencias
             //falta filtro rol
-            $lxps = vwLicenciasXProfesor::where('legajo_prof', $rxp->legajo_prof)->where('id_rol_prof', $rxp->id)->whereBetween('fecha', [$fecIni, $fecFin])->get();
+            $lxps = vwLicenciasXProfesor::where('baja_pro',0)->where('es_profesor',$isprof)->where('legajo_prof', $rxp->legajo_prof)->where('id_rol_prof', $rxp->id)->whereBetween('fecha', [$fecIni, $fecFin])->get();
 
             foreach (($lxps) as $lxp) {
                 $day = Carbon::parse($lxp->fecha);
