@@ -18,20 +18,27 @@
             <th scope="col"></th>
             <th scope="col">Nombre</th>
             <th scope="col">Codigo</th>
-            <th scope="col"></th>
+            <th scope="col">Activo</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
             @foreach ($roles as $rol)
                 <tr>
-                    <th class="fa fa-user"></th>
+                    <th class="fa fa-graduation-cap"></th>
                     <td>{{$rol->nombre}}</td>
                     <td>{{$rol->codigo}}</td>
+                    <td>
+                      <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="activeRol{{$rol->id}}" @if ($rol->baja==0) checked @endif onclick="deleteRol({{$rol->id}})">
+                      <label class="custom-control-label" for="activeRol{{$rol->id}}"></label>
+                      </div>
+                    </td>
                     {{--<td>{{$rol->baja}}</td>
                     <td><input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if($rol->baja == 1) checked @endif></td>--}}
                     <td><button class="btn btn-warning fa fa-edit" onClick="openRolModalRol({{$rol->id}},'{{$rol->nombre}}')"></button></td>
-                    <td><button class="btn btn-danger fa fa-trash" onClick="deleteRol({{$rol->id}})"></button></td>
+                    {{--<td><button class="btn btn-danger fa fa-trash" onClick="deleteRol({{$rol->id}})"></button></td>--}}
+                    
                   </tr>
             @endforeach
         </tbody>
@@ -125,7 +132,8 @@ function openRolModalRol(data_id,data_name)
     }
 
     function deleteRol(id) {
-      if (confirm("¿Desea confirmar la eliminacion del rol?")) {
+      //if (confirm("¿Desea confirmar la eliminacion del rol?")) {
+      var active=$('#activeRol'+id).is(":checked");
        $.ajax ({
         headers: {
         'X-CSRF-Token': '{{ csrf_token() }}',
@@ -134,6 +142,7 @@ function openRolModalRol(data_id,data_name)
        url:'{{ route("roles.rolDelete") }}',
        data:{
         'id_rol':id, 
+        'active':active,
        }
       ,
       success: function(data2){
@@ -141,6 +150,7 @@ function openRolModalRol(data_id,data_name)
           window.location.replace(data2);
        },
         error: function(data){
+          document.getElementById("activeRol"+id).checked = !active;
           if (data.status === 422) {
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors.errors, function(key, value) {
@@ -153,7 +163,7 @@ function openRolModalRol(data_id,data_name)
                     }
         }
     });
-  }  
+  //}  
     }
 
     function hideAlert() {

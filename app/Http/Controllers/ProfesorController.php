@@ -21,7 +21,7 @@ class ProfesorController extends Controller
 {
     public function index()
     {
-        $profesores = Profesor::where('baja', 0)->paginate();
+        $profesores = Profesor::paginate();
         $roles = Roles::get();
         $licencias = Licencias::get();
         return view("profesors/index", ['profesores' => $profesores]);
@@ -41,7 +41,7 @@ class ProfesorController extends Controller
     {
         $profesor = Profesor::find($id_profesor);
         $roles = vwRolXProfesor::where('legajo_prof', $profesor->legajo)->get();
-        $licencias = Licencias::get();
+        $licencias = Licencias::where('baja',0)->get();
         $lxps = vwLicenciasXProfesor::where('legajo_prof', $profesor->legajo)->where('baja', 0)->orderByDesc('fecha')->paginate(10);
 
         return view("profesors/absents", ['lxps' => $lxps, 'profesor' => $profesor, 'roles' => $roles, 'licencias' => $licencias]);
@@ -56,12 +56,12 @@ class ProfesorController extends Controller
             $logs->nombre = "search: " . $search;
             $logs->save();
             if ($search && ($search != "" || $search != " ")) {
-                $profesores = Profesor::where('baja', 0)->where('nombre', 'like', '%' . $search . '%')->orWhere('apellido', 'like', '%' . $search . '%')
+                $profesores = Profesor::where('nombre', 'like', '%' . $search . '%')->orWhere('apellido', 'like', '%' . $search . '%')
                     ->orWhere('legajo', 'like', '%' . $search . '%')->paginate(15);
                     return view("profesors/filterProfesors", ['profesores' => $profesores])->render();
             }
         }
-        $profesores = Profesor::where('baja', 0)->paginate(15);
+        $profesores = Profesor::paginate(15);
         
 
         return view("profesors/filterProfesors", ['profesores' => $profesores])->render();
@@ -132,7 +132,7 @@ class ProfesorController extends Controller
     {
         $profesor = Profesor::find($id_profesor);
         $rxps = vwRolXProfesor::where('legajo_prof', $profesor->legajo)->get();
-        $roles = Roles::get();
+        $roles = Roles::where('baja',0)->get();
         return view("profesors/roles", ['rxps' => $rxps, 'profesor' => $profesor, 'roles' => $roles]);
     }
 
@@ -321,9 +321,18 @@ class ProfesorController extends Controller
     {
         if (request()->ajax()) {
             $profesor = Profesor::where('id', $request->id_profesor)->first();
-            $profesor->baja = 1;
+            $active = $request->active == 'true' ? 0 : 1;
+            $profesor->baja =  $active;
             $profesor->save();
             return route('profesors.index');
         }
+    }
+
+    public function rolXProfDelete(Request $request)
+    {
+        $rol = RolesXProfesor::find($request->id_rol);
+        $profesor = Profesor::where('legajo', $request->legajo)->first();
+        $rol->delete();
+        return route('profesors.roles', ['id_profesor' => $profesor->id]);
     }
 }

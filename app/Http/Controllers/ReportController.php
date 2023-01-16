@@ -155,8 +155,8 @@ class ReportController extends Controller
         $fecFin = date('Y-m-d', strtotime($request->fecha_proceso . "+" . 5 . " days"));
 
         //obtengo roles sin fecha_fin y con fecha fin en rango
-        $rxps1 = vwRolXProfesor::where('baja',0)->whereNull('fecha_fin')->get();
-        $rxps1_2 = vwRolXProfesor::where('fecha_fin', '>', $fecFin)->get();
+        $rxps1 = vwRolXProfesor::where('baja_pro',0)->whereNull('fecha_fin')->get();
+        $rxps1_2 = vwRolXProfesor::where('baja_pro',0)->where('fecha_fin', '>', $fecFin)->get();
         $rxps1 = $rxps1->merge($rxps1_2);
 
         $rxps2 = vwRolXProfesor::where('baja', 0)->whereBetween('fecha_fin', [$fecIni, $fecFin])->get();

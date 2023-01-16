@@ -24,6 +24,7 @@ return new class extends Migration
         , lic.nombre as nombre_licencia
         , pro.nombre as nombre_profesor
         , pro.apellido as apellido_profesor 
+        , pro.baja as baja_pro
         , rol.nombre as nombre_rol
         , rxp.sit_revista
         from licencias_x_profesor lxp 

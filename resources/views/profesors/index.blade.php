@@ -244,7 +244,7 @@
         }
 
         function deleteProf(data) {
-            if (confirm("¿Desea confirmar la eliminacion del profesor?")) {
+                var active=$('#activeProf'+data).is(":checked");
                 var op = "";
                 $.ajax({
                     headers: {
@@ -254,10 +254,11 @@
                     url: '{{ route('profesors.delete') }}',
                     data: {
                         'id_profesor': data,
+                        'active':active,
                     },
                     success: function(data2) {
 
-                        alert('Profesor eliminado con éxito.');
+                        alert('Profesor/a modificado con éxito.');
                         window.location.replace(data2);
                     },
                     error: function() {
@@ -266,7 +267,7 @@
                     }
                 });
                 //alert('test ok');
-            }
+            
         }
     </script>
 @endsection

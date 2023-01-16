@@ -75,6 +75,7 @@
           <th scope="col">Fecha Baja</th>
         <th scope="col"></th>
         <th scope="col"></th>
+        <th scope="col"></th>
         </tr>
       </thead>
     <tbody>
@@ -100,6 +101,7 @@
       @else
       <td></td> 
       @endif
+      <td onclick="deleteRolXProf({{$r->id}})"> <button type="button" name="deleteRolbton" id="deleteRolbton" class="btn btn-danger fa fa-trash"></button></td>
       <!-- ModalSem 
     <div class="modal fade" id="rolModalSem{{$r->id}}" tabindex="-1" role="dialog" aria-labelledby="rolModalSemLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -404,6 +406,34 @@ function saveRolSem(id,id_rol_prof) {
     $(".modal-backdrop").remove();
     $('#rolModalCreate').hide();
     });
+
+    function deleteRolXProf(data) {
+    if(confirm("¿Desea confirmar la eliminacion del Rol?")){
+      var op ="";
+        $.ajax ({
+        headers: {
+        'X-CSRF-Token': '{{ csrf_token() }}',
+        },
+        type: 'post',
+       url:'{{ route("profesors.rolXProfDelete") }}',
+       data:{
+        'id_rol':data, 
+        'legajo':{{$profesor->legajo}} ,
+       }
+      ,
+      success: function(data2){
+         //$('#tableview').html(data2);
+          alert('Rol eliminado con éxito.');
+          window.location.replace(data2);
+       },
+        error: function(){
+          alert('Ha ocurrido un error en la transaccion.');
+          console.log("Error Occurred");
+        }
+    });
+            //alert('test ok');
+        }
+    }
   </script>
 
 @endsection

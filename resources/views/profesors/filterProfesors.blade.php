@@ -5,10 +5,10 @@
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
         <th scope="col">Legajo</th>
-        <th scope="col">Es Profesor</th>
+        <th scope="col">Es Profesor/a</th>
         <th scope="col">Ausentes</th>
         <th scope="col">Roles</th>
-        <th scope="col"></th>
+        <th scope="col">Activo</th>
       </tr>
     </thead>
     <tbody>
@@ -26,7 +26,13 @@
                 </td>
                 <td><a class="fa fa-calendar-times" href="{{route('profesors.absents',['id_profesor' => $profesor->id])}}"></a></td>
                 <td><a class="fa fa-graduation-cap" href="{{route('profesors.roles',['id_profesor' => $profesor->id])}}"></a></td>
-                <td onclick="deleteProf({{$profesor->id}})"><a class="fa fa-times-circle" style="color:red"></a></td>
+               {{-- <td onclick="deleteProf({{$profesor->id}})"><a class="fa fa-times-circle" style="color:red"></a></td>--}}
+               <td>
+                <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="activeProf{{$profesor->id}}" @if ($profesor->baja==0) checked @endif onclick="deleteProf({{$profesor->id}})">
+                <label class="custom-control-label" for="activeProf{{$profesor->id}}"></label>
+                </div>
+              </td>
               </tr>
         @endforeach
     </tbody>

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class RolesController extends Controller
 {
     public function index(){
-        $roles = Roles::where('baja',0)->paginate(10);
+        $roles = Roles::paginate(10);
         return view("roles/index",['roles' => $roles]);
     }
 
@@ -117,7 +117,8 @@ class RolesController extends Controller
                 $rol = Roles::where('id', $idRol)->first();
                 if($rol)
                 {
-                    $rol->baja = 1;
+                    $active = $request->active == 'true' ? 0 : 1;
+                    $rol->baja = $active;
                     $rol->save();
                     return route('roles.index');
                 }

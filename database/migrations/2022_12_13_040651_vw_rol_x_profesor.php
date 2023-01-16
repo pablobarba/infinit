@@ -20,6 +20,7 @@ return new class extends Migration
         , rxp.legajo_prof
         , pro.nombre as nombre_profesor
         , pro.apellido as apellido_profesor 
+        , pro.baja as baja_pro
         , rol.nombre as nombre_rol
         , rxp.sit_revista
         ,rxp.fecha_fin

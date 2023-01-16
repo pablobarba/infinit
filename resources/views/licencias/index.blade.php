@@ -21,17 +21,22 @@
             <th scope="col">Codigo</th>
             <th scope="col">Activo</th>
             <th scope="col"></th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
             @foreach ($licencias as $li)
                 <tr>
-                    <th class="fa fa-user"></th>
+                    <th class="fa fa-calendar-times"></th>
                     <td>{{$li->nombre}}</td>
                     <td>{{$li->codigo}}</td>
+                    <td>
+                      <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="activeLic{{$li->id}}" @if ($li->baja==0) checked @endif onclick="deleteLic({{$li->id}})">
+                      <label class="custom-control-label" for="activeLic{{$li->id}}"></label>
+                      </div>
+                    </td>
                     <td><button class="btn btn-warning fa fa-edit" onClick="openLicModalLic({{$li->id}},'{{$li->nombre}}')"></button></td>
-                    <td><button class="btn btn-danger fa fa-trash" onClick="deleteLic({{$li->id}})"></button></td>
+                  {{--  <td><button class="btn btn-danger fa fa-trash" onClick="deleteLic({{$li->id}})"></button></td>--}}
                   </tr>
             @endforeach
         </tbody>
@@ -126,7 +131,8 @@
           }
       
           function deleteLic(id) {
-            if (confirm("¿Desea confirmar la eliminacion de la licencia?")) {
+            //if (confirm("¿Desea confirmar la eliminacion de la licencia?")) {
+            var active=$('#activeLic'+id).is(":checked");
              $.ajax ({
               headers: {
               'X-CSRF-Token': '{{ csrf_token() }}',
@@ -135,6 +141,7 @@
              url:'{{ route("licencias.licDelete") }}',
              data:{
               'id_lic':id, 
+              'active':active,
              }
             ,
             success: function(data2){
@@ -155,7 +162,7 @@
           }
           });
                  
-          }
+        //  }
         }
         function hideAlert() {
       var listElements = document.querySelectorAll("#alert_param_lic li");

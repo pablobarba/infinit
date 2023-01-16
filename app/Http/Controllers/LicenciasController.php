@@ -9,7 +9,7 @@ use PharIo\Manifest\License;
 class LicenciasController extends Controller
 {
     public function index(){
-        $licencias = Licencias::where('baja',0)->paginate(10);
+        $licencias = Licencias::paginate(10);
         return view("licencias/index",['licencias' => $licencias]);
     }
 
@@ -117,7 +117,8 @@ class LicenciasController extends Controller
                 $lic = Licencias::where('id', $idLic)->first();
                 if($lic)
                 {
-                    $lic->baja = 1;
+                    $active = $request->active == 'true' ? 0 : 1;
+                    $lic->baja = $active;
                     $lic->save();
                     return route('licencias.index');
                 }
