@@ -148,7 +148,7 @@ class ProfesorController extends Controller
                 return response()->json(['errors' => $request->validator->messages()], 422);
             } else {
                 $rol = RolesXProfesor::find($request->id_rol_x_pro);
-                $rol->baja = 1;
+                $rol->baja = 0;
                 $rol->fecha_fin = $request->fecha_fin;
                 $rol->save();
                 $profesor = Profesor::where('legajo', $request->legajo)->first();

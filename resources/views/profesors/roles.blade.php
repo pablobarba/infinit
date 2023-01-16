@@ -83,14 +83,14 @@
       <td>{{$r->nombre_rol}}</td>
       <td>{{$r->sit_revista}}</td>
       <td>{{$r->fecha_fin}}</td>
-      @if($r->baja == 0)        
+      {{--@if($r->fecha_fin != null)        --}}
       {{--<td> <button type="button" name="deleteRolBtn" id="deleteRolBtn" class="btn btn-danger" onclick="deleteRol({{$r->id}})">Baja Rol</button></td>--}}
       <td> <button type="button" class="btn btn-danger" data-target="#rolModalDelete{{$r->id}}" data-toggle="modal" data-target-id="{{ $r->id }}">
-        Baja Rol
+        Asig. Fecha fin
       </button></td>
-      @else
+   {{--   @else
       <td></td> 
-      @endif
+      @endif--}}
 
       @if($r->baja == 0)    
       <td> <button type="button" class="btn btn-primary" 
@@ -175,7 +175,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="rolModalDeleteLabel">Baja Rol: {{$r->nombre_rol}} </h5>
+            <h5 class="modal-title" id="rolModalDeleteLabel">Asig. fecha fin rol: {{$r->nombre_rol}} - {{$r->sit_revista}} </h5>
             <button id="btnCloseDeleteRol" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" 
             onClick="closeRolDeleteModal({{$r->id}})">
               <span aria-hidden="true">&times;</span>
@@ -195,7 +195,7 @@
                   <br>
                 </form>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" name="frmRolDelete" id="frmRolDelete" onClick="deleteRol({{$r->id}})" >Dar de baja</button>
+                  <button type="button" class="btn btn-danger" name="frmRolDelete" id="frmRolDelete" onClick="deleteRol({{$r->id}})" >Asig. Fecha Fin</button>
                     </div>
           </div>
           
@@ -345,7 +345,7 @@ function saveRolSem(id,id_rol_prof) {
         });*/
     
   function deleteRol(data) {
-  if(confirm("¿Desea confirmar la eliminacion del rol?")){
+  if(confirm("¿Desea confirmar la asignacion de la fecha de fin del rol?")){
     var op ="";
     //var fec_fin =document.getElementById("fecha_fin"+data).value;
     var fec_fin = $('#fecha_fin'+data).val();
@@ -363,7 +363,7 @@ function saveRolSem(id,id_rol_prof) {
     ,
     success: function(data2){
        //$('#tableview').html(data2);
-        alert('Rol eliminado con éxito.');
+        alert('Fecha fin asignada con éxito.');
         
         $('.alert-danger').hide();
         $('body').removeClass('modal-open');

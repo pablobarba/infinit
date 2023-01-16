@@ -54,7 +54,7 @@ class ReportController extends Controller
             foreach (json_decode($request->licencias) as $lic) {
                 $profesors = Profesor::where('legajo', $lic->profesor)->first();
                 $licencia = Licencias::where('id', $lic->licenciaId)->first();
-                
+
                 $rolXProf = vwRolXProfesor::where('id', $lic->rolId)->first();
 
                 $fecIni = $request->fecha;
@@ -64,16 +64,16 @@ class ReportController extends Controller
                 if ($fecIni) {
                     if ($profesors) {
                         $licXprof->legajo_prof = $profesors->legajo;
-                        
+
                         if ($licencia) {
                             $licXprof->id_licencia = $licencia->id;
-                            
+
                             if ($rolXProf) {
                                 $licXprof->id_rol_prof = $lic->rolId;
                                 if ($lic->dia) {
                                     $day = $lic->dia;
                                     $daysToAdd = 0;
-                                    
+
                                     if (strtoupper($day) == "LUNES") {
                                         $daysToAdd = 0;
                                     }
@@ -150,10 +150,20 @@ class ReportController extends Controller
         $sem = $request->fecha_proceso;
 
         $collection = new Collection();
-        $rxps = vwRolXProfesor::where('baja', 0)->whereNull('fecha_fin')->orderBy('legajo_prof', 'DESC')->get();
 
         $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
         $fecFin = date('Y-m-d', strtotime($request->fecha_proceso . "+" . 5 . " days"));
+
+        //obtengo roles sin fecha_fin y con fecha fin en rango
+        $rxps1 = vwRolXProfesor::where('baja',0)->whereNull('fecha_fin')->get();
+        $rxps1_2 = vwRolXProfesor::where('fecha_fin', '>', $fecFin)->get();
+        $rxps1 = $rxps1->merge($rxps1_2);
+
+        $rxps2 = vwRolXProfesor::where('baja', 0)->whereBetween('fecha_fin', [$fecIni, $fecFin])->get();
+        
+        $rxps = $rxps1->merge($rxps2);
+
+        $rxps = collect($rxps)->sortByDesc('legajo_prof');
 
         foreach (($rxps) as $rxp) {
             //por cada rol prof veo dias disponibles
@@ -202,9 +212,6 @@ class ReportController extends Controller
             }
             #endregion
 
-            #region ver feriados
-            #endregion
-
             #region ver dias no disponibles
             $rxpsem = rolXProfesorSem::where('id_rol_prof', $rxp->id)->where('baja', 0)->first();
             $logs = new logs();
@@ -231,6 +238,16 @@ class ReportController extends Controller
                 }
             }
             #endregion
+
+            #region ver fecha_fin
+            if ($rxp->fecha_fin != null && ($rxp->fecha_fin >= $fecIni && $rxp->fecha_fin <= $fecFin)){
+                $tmp = $this->setBajaSem($rxp,$tmp);
+            }
+            #endregion
+
+            #region ver feriados
+            #endregion
+
             $collection->push($tmp);
         }
 
@@ -271,9 +288,50 @@ class ReportController extends Controller
 
         $json = json_encode($collection);
 
-        return Excel::download(new profExport($collection,$dayReport), 'invoices.xlsx');
+        return Excel::download(new profExport($collection, $dayReport), 'invoices.xlsx');
 
         //return Excel::download(new Export($collection), 'test.xlsx');
         //return $json;
+    }
+    public function setBajaSem($rxp,$tmp)
+    {
+        $dayFf = Carbon::parse($rxp->fecha_fin);
+       
+        
+        if ($dayFf->dayOfWeek === Carbon::MONDAY) {
+            $tmp->lunes = "BAJA";
+            $tmp->martes = "BAJA";
+            $tmp->miercoles = "BAJA";
+            $tmp->jueves = "BAJA";
+            $tmp->viernes = "BAJA";
+            $tmp->sabado = "BAJA";
+        }
+        if ($dayFf->dayOfWeek === Carbon::TUESDAY) {
+            $tmp->martes = "BAJA";
+            $tmp->miercoles = "BAJA";
+            $tmp->jueves = "BAJA";
+            $tmp->viernes = "BAJA";
+            $tmp->sabado = "BAJA";
+        }
+        if ($dayFf->dayOfWeek === Carbon::WEDNESDAY) {
+            $tmp->miercoles = "BAJA";
+            $tmp->jueves = "BAJA";
+            $tmp->viernes = "BAJA";
+            $tmp->sabado = "BAJA";
+        }
+        if ($dayFf->dayOfWeek === Carbon::THURSDAY) {
+            $tmp->jueves = "BAJA";
+            $tmp->viernes = "BAJA";
+            $tmp->sabado = "BAJA";
+        }
+        if ($dayFf->dayOfWeek === Carbon::FRIDAY) {
+            $tmp->viernes = "BAJA";
+            $tmp->sabado = "BAJA";
+        }
+        if ($dayFf->dayOfWeek === Carbon::SATURDAY) {
+            $tmp->sabado = "BAJA";
+        }
+       // dd($rxp);
+        return $tmp;
     }
 }
