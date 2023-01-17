@@ -4,7 +4,7 @@
 @section('content')
     <div class="container">
 
-        <h1>Profesores</h1>
+        <h1>Personas</h1>
         <!-- Button trigger modal -->
         <div class="col-lg-12 col-md-12 col-sm-12">
             
@@ -127,7 +127,7 @@
 
         function fetch_data(page) {
           var filter = $('#searchProfInp').val();
-
+           
             $.ajax({
                 url: "{{ route('profesors.filterProfesors') }}",
                 data: {
