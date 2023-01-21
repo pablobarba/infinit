@@ -25,15 +25,8 @@
 
     <script>
         //General filter absents by date
-        $(document).ready(function() {
-            $('.input-daterange').datepicker({
-                todayBtn: 'linked',
-                format: 'yyyy-mm-dd',
-                autoclose: true
-            });
-
-            load_data();
-            function load_data(from_date = '', to_date = '') {
+        
+        function load_data(from_date = '', to_date = '') {
                 var op = "";
                 $.ajax({
                     headers: {
@@ -52,6 +45,16 @@
                     }
                 });
             };
+        $(document).ready(function() {
+            $('.input-daterange').datepicker({
+                todayBtn: 'linked',
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+
+            load_data();
+
+
 
             $('#filter').click(function() {
                 var from_date = $('#from_date').val();
@@ -99,6 +102,34 @@
             }
 
         });
+
+        function deleteLic(id, legajo) {
+                if (confirm("¿Desea confirmar la eliminacion de la licencia?")) {
+                    var op = "";
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-Token': '{{ csrf_token() }}',
+                        },
+                        type: 'post',
+                        url: '{{ route('profesors.licDelete') }}',
+                        data: {
+                            'id_licencia': id,
+                            'legajo': legajo,
+                        },
+                        success: function(data2) {
+                            alert('Licencia eliminada con éxito.');
+
+                            load_data();
+                        },
+                        error: function() {
+                            alert('Ha ocurrido un error en la transaccion.');
+                            console.log("Error Occurred");
+                        }
+                    });
+                }
+            }
+
     </script>
 
 @endsection

@@ -19,7 +19,7 @@
     <td>{{$l->nombre_rol}}</td>
     <td>{{$l->sit_revista}}</td>
     <td>{{$l->fecha}}</td>
-    <td onclick="deleteLic({{$l->id}})"> <button type="button" name="deletelic" id="deletelic" class="btn btn-danger fa fa-trash"></button></td>
+    <td onclick="deleteLic({{$l->id}},{{$l->legajo_prof}})"> <button type="button" name="deletelic" id="deletelic" class="btn btn-danger fa fa-trash"></button></td>
     
   </tr>
 @endforeach
