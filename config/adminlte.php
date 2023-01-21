@@ -329,8 +329,13 @@ return [
         ],
         ['header' => 'REPORTES'],
         [
-            'text' => 'Carga Licencias',
+            'text' => 'Carga Lic. Masiva',
             'url'  => 'report',
+            'icon' => 'fas fa-fw fa-bolt',
+        ],
+        [
+            'text' => 'Carga Lic. fecha',
+            'url'  => 'licenciasgral/licxfec',
             'icon' => 'fas fa-fw fa-bolt',
         ],
         [

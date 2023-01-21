@@ -84,5 +84,8 @@ Route::controller(LicenciasGralController::class)->group(function(){
     Route::get('licenciasgral', 'index') -> name('licenciasgral.index');
     Route::post('licenciasgral/licGralFilterDate@filter','licGralFilterDate') -> name('licenciasgral.licGralFilterDate');
     Route::get('licenciasgral/licGralFilterDate@filter', 'licGralFilterDate') -> name('profesors.licGralFilterDate');
+    Route::get('licenciasgral/licxfec','licxfec') -> name('licenciasgral.licxfec');
+    Route::post('licenciasgral/getRolByProfesor@filter','getRolByProfesor') -> name('licenciasgral.getRolByProfesor');
+    Route::post('licenciasgral/saveLicences@filter','saveLicences') -> name('licenciasgral.saveLicences');
 });
 //licencias General
