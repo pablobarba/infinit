@@ -247,6 +247,27 @@ class ReportController extends Controller
             #endregion
 
             #region ver feriados
+            if($request->feriados)
+            {
+                if($request->feriados['feriadoLunes']=='true'){
+                    $tmp->lunes = "FERIADO";
+                }
+                if($request->feriados['feriadoMartes']=='true'){
+                    $tmp->martes = "FERIADO";
+                }
+                if($request->feriados['feriadoMiercoles']=='true'){
+                    $tmp->miercoles = "FERIADO";
+                }
+                if($request->feriados['feriadoJueves']=='true'){
+                    $tmp->jueves = "FERIADO";
+                }
+                if($request->feriados['feriadoViernes']=='true'){
+                    $tmp->viernes = "FERIADO";
+                }
+                if($request->feriados['feriadoSabado']=='true'){
+                    $tmp->sabado = "FERIADO";
+                }
+            }
             #endregion
 
             $collection->push($tmp);
