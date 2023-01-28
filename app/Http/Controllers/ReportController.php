@@ -181,7 +181,7 @@ class ReportController extends Controller
                 'jueves' => "",
                 'viernes' => "",
                 'sabado' => "",
-                'observaciones' => ""
+                'observaciones' =>  $rxp->observacion,
             ];
 
             #region ver licencias
@@ -310,7 +310,7 @@ class ReportController extends Controller
 
         $json = json_encode($collection);
 
-        return Excel::download(new profExport($collection, $dayReport), 'invoices.xlsx');
+        return Excel::download(new profExport($collection, $dayReport,$isprof), 'invoices.xlsx');
 
         //return Excel::download(new Export($collection), 'test.xlsx');
         //return $json;

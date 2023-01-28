@@ -30,7 +30,7 @@
               @csrf
               <div class="form-row">     
                 <div class="form-group col-lg-12 col-md-6">
-                  <label for="inputRol">Rol</label>
+                  <label for="inputRol">Rol *</label>
                   <select class="form-select"  name="rolfrm" id="rolfrm">
                     <option value="">--Por favor seleccionar una opcion--</option>
                     @foreach($roles as $rol)
@@ -42,8 +42,16 @@
                     </select>
                 </div>
                 <div class="form-group col-lg-12 col-md-6">
-                  <label for="inputDate">Sit Revista</label>
+                  <label for="inputDate">Sit Revista *</label>
                   <input type="text" name="sitRevistafrm" id="sitRevistafrm" class="form-control" placeholder="Sit Revista"  />
+                </div>
+                <div class="form-group col-lg-12 col-md-6">
+                  <label for="inputDate">Observacion</label>
+                  <input type="text" name="observacionfrm" id="observacionfrm" class="form-control" placeholder="Observacion visible en reporte"  maxlength="50"/>
+                </div>
+                <div class="form-group col-lg-12 col-md-6">
+                  <label for="inputDate">Descripcion</label>
+                  <input type="text" name="descripcionfrm" id="descripcionfrm" class="form-control" placeholder="Descripcion corta para identificar Rol"  maxlength="10"/>
                 </div>
               </div>
               <div class="form-group col-md-6">
@@ -72,6 +80,8 @@
         <tr>
           <th scope="col">Rol</th>
           <th scope="col">Sit Revista</th>
+          <th scope="col">Observacion</th>
+          <th scope="col">Descripcion</th>
           <th scope="col">Fecha Baja</th>
         <th scope="col"></th>
         <th scope="col"></th>
@@ -83,6 +93,8 @@
   <tr>
       <td>{{$r->nombre_rol}}</td>
       <td>{{$r->sit_revista}}</td>
+      <td>{{$r->observacion}}</td>
+      <td>{{$r->descripcion}}</td>
       <td>{{$r->fecha_fin}}</td>
       {{--@if($r->fecha_fin != null)        --}}
       {{--<td> <button type="button" name="deleteRolBtn" id="deleteRolBtn" class="btn btn-danger" onclick="deleteRol({{$r->id}})">Baja Rol</button></td>--}}
@@ -177,7 +189,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="rolModalDeleteLabel">Asig. fecha fin rol: {{$r->nombre_rol}} - {{$r->sit_revista}} </h5>
+            <h5 class="modal-title" id="rolModalDeleteLabel">Asig. fecha fin rol: {{$r->nombre_rol}} - {{$r->sit_revista}} - {{$rol->descripcion}}  </h5>
             <button id="btnCloseDeleteRol" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" 
             onClick="closeRolDeleteModal({{$r->id}})">
               <span aria-hidden="true">&times;</span>
@@ -306,6 +318,8 @@ function saveRolSem(id,id_rol_prof) {
                       id_rol: $('#rolfrm').val(),
                       sit_revista: $('#sitRevistafrm').val(), 
                       legajo: $('#legajo').val(), 
+                      observacion :  $('#observacionfrm').val(), 
+                      descripcion :  $('#descripcionfrm').val(), 
                     },
                     success: function(result){
                         if(!result.errors)

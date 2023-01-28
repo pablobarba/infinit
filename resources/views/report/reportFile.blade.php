@@ -23,11 +23,11 @@
            
   </tbody>
 </table>
-
- <h5>ASUNTOS DOCENTES:   <h5>
-
-
-
+@if($isprof == 1) 
+<h5>ASUNTOS DOCENTES:   <h5>
+@else
+<h5>AUXILIARES:   <h5>
+@endif
   <table class="table">
     <thead>
       <tr>

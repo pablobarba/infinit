@@ -168,23 +168,25 @@ class ProfesorController extends Controller
             return response()->json(['errors' => $request->validator->messages()]);
         } else {
             //check if already exist
-            $rxp = RolesXProfesor::where('legajo_prof', $request->legajo)
+            /*$rxp = RolesXProfesor::where('legajo_prof', $request->legajo)
                 ->where('id_rol', $request->id_rol)->where('sit_revista', $request->sit_revista)->first();
             if ($rxp) {
                 $errors = [
                     "Ya existe la asignación por rol"
                 ];
                 return response()->json(['errors' => $errors], 422);
-            } else {
+            } else {*/
                 $rxp2 = new RolesXProfesor();
                 $profesor = Profesor::where('legajo', $request->legajo)->first();
                 $rxp2->id_rol = $request->id_rol;
                 $rxp2->legajo_prof = $request->legajo;
                 $rxp2->sit_revista =  $request->sit_revista;
+                $rxp2->observacion =  $request->observacion;
+                $rxp2->descripcion =  $request->descripcion;
                 $rxp2->baja = 0;
                 $rxp2->save();
                 return route('profesors.roles', ['id_profesor' => $profesor->id]);
-            }
+           // }
         }
     }
 

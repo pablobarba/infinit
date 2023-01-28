@@ -26,6 +26,8 @@ return new class extends Migration
 
         $table->foreign('legajo_prof')->references('legajo')->on('profesores')->onDelete('cascade');  
         $table->string('sit_revista',100);
+        $table->string('observacion',50)->nullable();
+        $table->string('descripcion',10)->nullable();
     });
     }
 

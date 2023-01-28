@@ -25,6 +25,8 @@ return new class extends Migration
         , rol.nombre as nombre_rol
         , rxp.sit_revista
         ,rxp.fecha_fin
+        ,rxp.observacion
+        ,rxp.descripcion
         from roles_x_profesor rxp 
         INNER JOIN profesores pro on pro.legajo = rxp.legajo_prof
         INNER JOIN roles rol on rxp.id_rol = rol.id');
