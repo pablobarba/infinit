@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('licencias_x_profesor',function(Blueprint $table){
             $table->id();
             $table->boolean('baja');
-            $table->timestamps(); //created_at updated_at
+          
 
             $table->unsignedBigInteger('id_licencia');
             $table->foreign('id_licencia')->references('id')->on('licencias')->onDelete('cascade');
@@ -28,7 +28,8 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_rol_prof');
             $table->foreign('id_rol_prof')->references('id')->on('roles_x_profesor')->onDelete('cascade');
-            
+            $table->timestamps(); //created_at updated_at
+            $table->softDeletes();
         });
     }
 
