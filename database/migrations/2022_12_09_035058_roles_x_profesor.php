@@ -24,7 +24,8 @@ return new class extends Migration
         $table->string('sit_revista',100);
         $table->string('observacion',50)->nullable();
         $table->string('descripcion',10)->nullable();
-
+        $table->timestamps();
+        $table->softDeletes();
 
     });
     }
