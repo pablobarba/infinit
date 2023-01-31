@@ -4,7 +4,7 @@
 @section('content')
     <div class="container">
 
-        <h1>Profesor</h1>
+        <h1>Persona</h1>
         <!-- Button trigger modal -->
         <div class="col-lg-12 col-md-12 col-sm-12">
             
