@@ -90,5 +90,10 @@ class DatabaseSeeder extends Seeder
         $lxp2->baja = 0;
         $lxp2->save();*/
         $this->call(ProfesoresTableSeeder::class);
+        $this->call(LicenciasTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
+        $this->call(LicenciasXProfesorTableSeeder::class);
+        $this->call(RolesXProfesorTableSeeder::class);
+        $this->call(RolXProfesorSemTableSeeder::class);
     }
 }
