@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LicenciasXProfesor extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = "licencias_x_profesor";
 }

@@ -86,7 +86,7 @@ class ProfesorController extends Controller
 
     public function licDelete(Request $request)
     {
-        $lic = LicenciasXProfesor::find($request->id_licencia);
+        $lic = LicenciasXProfesor::where('id',$request->id_licencia);
         $profesor = Profesor::where('legajo', $request->legajo)->first();
         $lic->delete();
         $myRequest = new Request();

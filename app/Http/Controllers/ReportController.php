@@ -160,7 +160,7 @@ class ReportController extends Controller
         $rxps1_2 = vwRolXProfesor::where('baja_pro',0)->where('es_profesor',$isprof)->where('fecha_fin', '>', $fecFin)->get();
         $rxps1 = $rxps1->merge($rxps1_2);
 
-        $rxps2 = vwRolXProfesor::where('baja', 0)->whereBetween('fecha_fin', [$fecIni, $fecFin])->get();
+        $rxps2 = vwRolXProfesor::where('baja', 0)->whereBetween('fecha_fin', [$fecIni, $fecFin])->where('es_profesor',$isprof)->get();
         
         $rxps = $rxps1->merge($rxps2);
 
