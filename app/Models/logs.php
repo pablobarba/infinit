@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class logs extends Model
 {
-    use HasFactory SoftDeletes;
+    use HasFactory, SoftDeletes;
     protected $table = "logs";
 }
