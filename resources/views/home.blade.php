@@ -4,7 +4,7 @@
 @section('content')
 <div class="text-center">
     <br>
-<h1>Colegio MUNICIPAL DE DANZAS JOSE NEGLIA</h1>
+<h1>Escuela MUNICIPAL DE DANZAS JOSE NEGLIA</h1>
 <i class="fa fa-university fa-5x" aria-hidden="true"></i>
 </div>
 @endsection
