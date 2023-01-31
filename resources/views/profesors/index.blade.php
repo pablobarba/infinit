@@ -17,7 +17,7 @@
         </div>
         <div class="col-lg-4 col-md-4">
           <button type="button" class="btn btn-primary" id="btnProf" onClick="openProfModal(-1,'')">
-              Crear Profesor
+              Crear Persona
           </button>
       </div>
       </div>
@@ -26,7 +26,7 @@
         <div id="modalView">
         </div> 
     </div>
-    
+    {{--
     <table class="table">
         <thead class="thead-dark">
           <tr>
@@ -62,12 +62,12 @@
       </table>
       <div class="d-flex justify-content-center">
         {{ $profesores->links() }}
-
+--}}
     <div id="tableview">
     </div>
     </div>
     </div>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).on('click', '.pagination a', function(event) {
             event.preventDefault();
@@ -77,7 +77,7 @@
 
         function fetch_data(page) {
           var filter = $('#searchProfInp').val();
-           
+
             $.ajax({
                 url: "{{ route('profesors.filterProfesors') }}",
                 data: {
@@ -123,8 +123,7 @@
                             $('.alert-danger').append('<li>' + value + '</li>');
                         });
                     } else {
-                        //alert('Ha ocurrido un error en la transaccion.');
-                        Swal.fire("Ha ocurrido un erro");
+                        alert('Ha ocurrido un error en la transaccion.');
                         $('.alert-danger').hide();
                         $('#profModal').modal('hide');
                     }
