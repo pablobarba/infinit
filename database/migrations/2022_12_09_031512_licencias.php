@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('licencias',function(Blueprint $table){
             $table->id();
             $table->boolean('baja');
-            $table->timestamps(); //created_at updated_at
+            
     
             $table->string('nombre',100);
             $table->string('codigo',20)->unique();
+            $table->timestamps(); //created_at updated_at
+            $table->softDeletes();
         });
     }
 

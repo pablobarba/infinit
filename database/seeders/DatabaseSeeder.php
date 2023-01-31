@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Profesor::factory(20)->create();
+       /* Profesor::factory(20)->create();
         
         $profesore = new Profesor();
         $profesore->nombre = "Pablo";
@@ -88,6 +88,7 @@ class DatabaseSeeder extends Seeder
         $lxp -> id_rol_prof = 2;
         $lxp2->fecha = Carbon::createFromDate(2022,07,23)->toDateTimeString();
         $lxp2->baja = 0;
-        $lxp2->save();
+        $lxp2->save();*/
+        $this->call(ProfesoresTableSeeder::class);
     }
 }
