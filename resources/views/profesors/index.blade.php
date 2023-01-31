@@ -67,7 +67,7 @@
     </div>
     </div>
     </div>
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).on('click', '.pagination a', function(event) {
             event.preventDefault();
@@ -123,7 +123,9 @@
                             $('.alert-danger').append('<li>' + value + '</li>');
                         });
                     } else {
-                        alert('Ha ocurrido un error en la transaccion.');
+                        //alert('Ha ocurrido un error en la transaccion.');
+                        Swal.fire("Ha ocurrido un erro");
+                        
                         $('.alert-danger').hide();
                         $('#profModal').modal('hide');
                     }
