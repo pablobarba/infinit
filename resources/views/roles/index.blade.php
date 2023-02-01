@@ -50,7 +50,6 @@
     </div>
     <div id="modalView">
     </div> 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 function openRolModalRol(data_id,data_name)
     {

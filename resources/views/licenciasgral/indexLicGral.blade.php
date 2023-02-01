@@ -22,7 +22,7 @@
         <div id="tableview">
         </div>
     </div>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
     
     <script>
         //General filter absents by date
