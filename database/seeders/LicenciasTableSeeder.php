@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\DB;
 class LicenciasTableSeeder extends Seeder
 {
 
@@ -16,9 +16,9 @@ class LicenciasTableSeeder extends Seeder
     {
         
 
-        \DB::table('licencias')->delete();
+        DB::table('licencias')->delete();
         
-        \DB::table('licencias')->insert(array (
+        DB::table('licencias')->insert(array (
             0 => 
             array (
                 'id' => 1,
