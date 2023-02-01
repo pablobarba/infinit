@@ -156,19 +156,8 @@
              }
             ,
             success: function(data2){
-              Swal.fire({
-                                    title: "Éxito",
-                                    text: "La licencia se borro correctamente",
-                                    icon: "success",
-                                    showCancelButton: false,
-                                    confirmButtonColor: "#DD6B55",
-                                    confirmButtonText: "Ok",
-                                    showLoaderOnConfirm: true,
-                                    preConfirm: () => {
-                                        document.location.replace(data2);
-                                    }
-
-                                });},
+            //document.location.replace(data2);
+              },
              error: function(data){
           if (data.status === 422) {
                         var errors = $.parseJSON(data.responseText);
