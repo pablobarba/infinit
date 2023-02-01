@@ -229,6 +229,8 @@
   <div id="modalView">
   </div> 
 </div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 <script>
 function saveRolSem(id,id_rol_prof) {
       var op ="";
@@ -264,10 +266,22 @@ function saveRolSem(id,id_rol_prof) {
         $('body').css('padding-right', '');
         $(".modal-backdrop").remove();
         $('#rolModalSem').hide();
-          alert('Dias semanales por rol establecidos con éxito.');
+          Swal.fire({
+                                    title: "Éxito",
+                                    text: "Dias semanales por rol establecidos con éxito",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
+
+                                });
        },
         error: function(){
-          alert('Ha ocurrido un error en la transaccion.');
+          Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
           console.log("Error Occurred");
         }
     });
@@ -328,6 +342,7 @@ function saveRolSem(id,id_rol_prof) {
                             $('#licModal').modal('hide');
 
                             window.location.replace(result);
+                            
                         }
                     },
                     error :function( data ) {
@@ -379,14 +394,26 @@ function saveRolSem(id,id_rol_prof) {
     ,
     success: function(data2){
        //$('#tableview').html(data2);
-        alert('Fecha fin asignada con éxito.');
+
         
         $('.alert-danger').hide();
         $('body').removeClass('modal-open');
     $('body').css('padding-right', '');
     $(".modal-backdrop").remove();
     $('#rolModalDelete'+data).hide();
-        window.location.replace(data2);
+    Swal.fire({
+                                    title: "Éxito",
+                                    text: "La fecha a sido asignada correctamente",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
+
+                                });
      },
       error: function(dataerr){
         if( dataerr.status === 422 ) {
@@ -432,16 +459,28 @@ function saveRolSem(id,id_rol_prof) {
        url:'{{ route("profesors.rolXProfDelete") }}',
        data:{
         'id_rol':data, 
-        'legajo':{{$profesor->legajo}} ,
-       }
-      ,
-      success: function(data2){
+        'legajo':{{$profesor->legajo}},
+       },
+    success: function(data2){
          //$('#tableview').html(data2);
           alert('Rol eliminado con éxito.');
-          window.location.replace(data2);
+          Swal.fire({
+                                    title: "Éxito",
+                                    text: "El rol se elimino con éxito",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
+
+                                });
+          //window.location.replace(data2);
        },
         error: function(){
-          alert('Ha ocurrido un error en la transaccion.');
+          Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
           console.log("Error Occurred");
         }
     });

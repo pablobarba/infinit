@@ -48,7 +48,7 @@
     <div id="modalView">
     </div> 
     </div>
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       function openLicModalLic(data_id,data_name)
           {
@@ -107,8 +107,19 @@
               $('body').css('padding-right', '');
               $(".modal-backdrop").remove();
               $('#licModal').hide();
-                alert('Operacion exitosa.');
-                window.location.replace(data2);
+              Swal.fire({
+                                    title: "Éxito",
+                                    text: "La licencia se guardo correctamente",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
+
+                                });
              },
               error: function(data){
                 if( data.status === 422 ) {
@@ -120,7 +131,7 @@
                               }
                               else
                               {
-                                  alert('Ha ocurrido un error en la transaccion.');
+                                Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
                                   $('.alert-danger').hide();
                                   $('#licModal').modal('hide');
                               }
@@ -145,9 +156,19 @@
              }
             ,
             success: function(data2){
-                alert('Operacion exitosa.');
-                window.location.replace(data2);
-             },
+              Swal.fire({
+                                    title: "Éxito",
+                                    text: "La licencia se borro correctamente",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
+
+                                });},
              error: function(data){
           if (data.status === 422) {
                         var errors = $.parseJSON(data.responseText);
@@ -156,7 +177,7 @@
                             $('.alert-danger').append('<li>' + value + '</li>');
                         });
                     } else {
-                        alert('Ha ocurrido un error en la transaccion.');
+                      Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
                         $('.alert-danger').hide();
                     }
           }

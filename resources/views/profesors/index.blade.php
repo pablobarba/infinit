@@ -124,7 +124,7 @@
                         });
                     } else {
                         //alert('Ha ocurrido un error en la transaccion.');
-                        Swal.fire("Ha ocurrido un erro");
+                        Swal.fire("Ooops...","Ha ocurrido un error","error");
                         
                         $('.alert-danger').hide();
                         $('#profModal').modal('hide');
@@ -170,8 +170,22 @@
                     $('body').css('padding-right', '');
                     $(".modal-backdrop").remove();
                     $('#profModal').hide();
-                    alert('Operacion exitosa.');
-                    window.location.replace(data2);
+                    //alert('Operacion exitosa.');
+                       
+                   Swal.fire({
+                                    title: "Éxito",
+                                    text: "La persona se a guardado correctamente",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
+
+                                });
+                   // window.location.replace(data2);
                 },
                 error: function(data) {
                     if (data.status === 422) {
@@ -181,7 +195,8 @@
                             $('.alert-danger').append('<li>' + value + '</li>');
                         });
                     } else {
-                        alert('Ha ocurrido un error en la transaccion.');
+                        //alert('Ha ocurrido un error en la transaccion.');
+                        Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
                         $('.alert-danger').hide();
                         $('#profModal').modal('hide');
                     }
@@ -205,12 +220,27 @@
                         'active':active,
                     },
                     success: function(data2) {
+                        
+                      //  alert('Profesor/a modificado con éxito.');
+                       // window.location.replace(data2);
+                        Swal.fire({
+                                    title: "Éxito",
+                                    text: "Profesor/a modificado con éxito",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
 
-                        alert('Profesor/a modificado con éxito.');
-                        window.location.replace(data2);
+                                });
+                   
                     },
                     error: function() {
-                        alert('Ha ocurrido un error en la transaccion.');
+                        //alert('Ha ocurrido un error en la transaccion.');
+                        Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
                         console.log("Error Occurred");
                     }
                 });

@@ -22,7 +22,8 @@
         <div id="tableview">
         </div>
     </div>
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
         //General filter absents by date
         
@@ -118,13 +119,24 @@
                             'legajo': legajo,
                         },
                         success: function(data2) {
-                            alert('Licencia eliminada con éxito.');
+                            Swal.fire({
+                                    title: "Éxito",
+                                    text: "La licencia se borro correctamente",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
 
+                                });
                             load_data();
                         },
                         error: function() {
-                            alert('Ha ocurrido un error en la transaccion.');
-                            console.log("Error Occurred");
+                            Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
+                      console.log("Error Occurred");
                         }
                     });
                 }

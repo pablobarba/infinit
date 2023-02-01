@@ -50,6 +50,7 @@
     </div>
     <div id="modalView">
     </div> 
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 function openRolModalRol(data_id,data_name)
     {
@@ -66,9 +67,10 @@ function openRolModalRol(data_id,data_name)
        }
       ,
       success: function(data2){
-          console.log(data2);
+          
           $('#modalView').html(data2);
           $('#rolModal').modal('show'); 
+         
        },
         error: function(){
           console.log("Error Occurred");
@@ -108,8 +110,20 @@ function openRolModalRol(data_id,data_name)
         $('body').css('padding-right', '');
         $(".modal-backdrop").remove();
         $('#rolModal').hide();
-          alert('Operacion exitosa.');
-          window.location.replace(data2);
+        Swal.fire({
+                                    title: "Éxito",
+                                    text: "El rol se creo con exito",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(data2);
+                                    }
+
+                                });
+          //window.location.replace(data2);
        },
         error: function(data){
           if( data.status === 422 ) {
@@ -121,9 +135,10 @@ function openRolModalRol(data_id,data_name)
                         }
                         else
                         {
-                            alert('Ha ocurrido un error en la transaccion.');
-                            $('.alert-danger').hide();
-                            $('#licModal').modal('hide');
+                            
+          Swal.fire("Oops...", "Ha ocurrido un error en la transaccion", "error");
+          $('.alert-danger').hide();
+            $('#licModal').modal('hide');
                         }
           console.log("Error Occurred");
         }
