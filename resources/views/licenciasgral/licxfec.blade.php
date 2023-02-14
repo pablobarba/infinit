@@ -6,10 +6,10 @@
         <h1>Carga licencias por rango de fecha</h1>
         <div class="row input-daterange">
             <div class="col-md-4">
-                <input type="date" name="from_date" id="from_date" class="form-control" placeholder="From Date" />
+                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date" />
             </div>
             <div class="col-md-4">
-                <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" />
+                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date" />
             </div>
             <div class="col-md-4">
                 <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>
@@ -104,8 +104,21 @@
 
                     },
                     success: function(result) {
-                        alert('Carga de licencias exitosa.');
-                        window.location.replace(result);
+                        //alert('Carga de licencias exitosa.');
+                        //window.location.replace(result);
+                        Swal.fire({
+                                    title: "Éxito",
+                                    text: "La licencia se cargo correctamente",
+                                    icon: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Ok",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        document.location.replace(result);
+                                    }
+
+                                });
                     },
                     error: function(data) {}
                 });
