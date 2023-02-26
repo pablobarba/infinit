@@ -46,6 +46,7 @@ Route::controller(ProfesorController::class)->group(function(){
     Route::post('profesors/rolSaveSemDays@filter','rolSaveSemDays') -> name('profesors.rolSaveSemDays');
     Route::post('profesors/getRolProfSemDay@filter','getRolProfSemDay') -> name('profesors.getRolProfSemDay');
     Route::post('profesors/rolXProfDelete@data','rolXProfDelete') -> name('profesors.rolXProfDelete');
+    Route::post('profesors/rolAbmCreate@filter','rolAbmCreate') -> name('profesors.rolAbmCreate');
 });
 //profesorController
 

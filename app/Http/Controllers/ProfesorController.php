@@ -86,7 +86,7 @@ class ProfesorController extends Controller
 
     public function licDelete(Request $request)
     {
-        $lic = LicenciasXProfesor::where('id',$request->id_licencia);
+        $lic = LicenciasXProfesor::where('id', $request->id_licencia);
         $profesor = Profesor::where('legajo', $request->legajo)->first();
         $lic->delete();
         $myRequest = new Request();
@@ -159,10 +159,16 @@ class ProfesorController extends Controller
 
     public function rolCreate(Request $request)
     {
-        $request->validate([
-            'id_rol' => 'required',
-            'sit_revista' => 'required'
-        ]);
+        if ($request->id <= 0) {
+            $request->validate([
+                'id_rol' => 'required',
+                'sit_revista' => 'required'
+            ]);
+        } else {
+            $request->validate([
+                'sit_revista' => 'required'
+            ]);
+        }
 
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->json(['errors' => $request->validator->messages()]);
@@ -176,17 +182,24 @@ class ProfesorController extends Controller
                 ];
                 return response()->json(['errors' => $errors], 422);
             } else {*/
-                $rxp2 = new RolesXProfesor();
-                $profesor = Profesor::where('legajo', $request->legajo)->first();
-                $rxp2->id_rol = $request->id_rol;
-                $rxp2->legajo_prof = $request->legajo;
+            $rxp2 = new RolesXProfesor();
+            $profesor = Profesor::where('legajo', $request->legajo)->first();
+            $rxp2->id_rol = $request->id_rol;
+            $rxp2->legajo_prof = $request->legajo;
+            $rxp2->sit_revista =  $request->sit_revista;
+            $rxp2->observacion =  $request->observacion;
+            $rxp2->descripcion =  $request->descripcion;
+            $rxp2->baja = 0;
+            if ($request->id > 0) {
+                $rxp2 = RolesXProfesor::where('id', $request->id)->first();
                 $rxp2->sit_revista =  $request->sit_revista;
                 $rxp2->observacion =  $request->observacion;
                 $rxp2->descripcion =  $request->descripcion;
-                $rxp2->baja = 0;
-                $rxp2->save();
-                return route('profesors.roles', ['id_profesor' => $profesor->id]);
-           // }
+            } else {
+            }
+            $rxp2->save();
+            return route('profesors.roles', ['id_profesor' => $profesor->id]);
+            // }
         }
     }
 
@@ -333,6 +346,24 @@ class ProfesorController extends Controller
                 $prof->id = 0;
                 return view("profesors/profesorAbm", ['prof' => $prof])->render();
             }
+        }
+    }
+
+    public function rolAbmCreate(Request $request)
+    {
+        if (request()->ajax()) {
+            $isnew = false;
+            $prof = Profesor::where('id', $request->id_persona)->first();
+            $roles = Roles::where('baja', 0)->get();
+            if ($request->id > 0) {
+                $isnew = false;
+                $rxps = vwRolXProfesor::where('id', $request->id)->first();
+            } else {
+                $isnew = true;
+                $rxps = new  vwRolXProfesor();
+                $rxps->id = 0;
+            }
+            return view("profesors/rolesAbm", ['profesor' => $prof, 'roles' => $roles, 'isNew' => $isnew, 'rxps' => $rxps])->render();
         }
     }
 }

@@ -9,68 +9,12 @@
           <!-- Modal -->
 <!--<div class="modal-backdrop fade in"  ></div>-->
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rolModalCreate" id="btnRolCreate">
+<button type="button" class="btn btn-primary" id="btnRolCreate" onClick="openRolAbmModal(-1,{{$profesor->id}})">
   Crear Rol
 </button>
-
-{{-- Modal CREATE ROL --}}
-<div class="modal fade" id="rolModalCreate" tabindex="-1" role="dialog" aria-labelledby="rolModalCreateLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="rolModalCreateLabel">Crear Rol: {{$profesor->nombre}} {{$profesor->apellido}} </h5>
-        <button id="btnRolCloseCreate" type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container"> 
-          <div class="alert alert-danger" style="display:none"></div>
-          <form method="POST">
-              @csrf
-              <div class="form-row">     
-                <div class="form-group col-lg-12 col-md-6">
-                  <label for="inputRol">Rol *</label>
-                  <select class="form-select"  name="rolfrm" id="rolfrm">
-                    <option value="">--Por favor seleccionar una opcion--</option>
-                    @foreach($roles as $rol)
-                        <option value="{{ $rol->id }}">
-                            {{ $rol->nombre }}
-                        </option>
-                
-                    @endforeach
-                    </select>
-                </div>
-                <div class="form-group col-lg-12 col-md-6">
-                  <label for="inputDate">Sit Revista *</label>
-                  <input type="text" name="sitRevistafrm" id="sitRevistafrm" class="form-control" placeholder="Sit Revista"  />
-                </div>
-                <div class="form-group col-lg-12 col-md-6">
-                  <label for="inputDate">Observacion</label>
-                  <input type="text" name="observacionfrm" id="observacionfrm" class="form-control" placeholder="Observacion visible en reporte"  maxlength="50"/>
-                </div>
-                <div class="form-group col-lg-12 col-md-6">
-                  <label for="inputDate">Descripcion</label>
-                  <input type="text" name="descripcionfrm" id="descripcionfrm" class="form-control" placeholder="Descripcion corta para identificar Rol"  maxlength="10"/>
-                </div>
-              </div>
-              <div class="form-group col-md-6">
-                  <input name="legajo" id="legajo" type="hidden" value="{{ $profesor->legajo }}"/>
-              </div>
-              <br>
-            </form>
-            <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="formSubmit">Grabar</button>
-                </div>
-      </div>
-      
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-{{-- /Modal CREATE ROL --}}
+ <!-- Modal -->
+ <div id="modalView">
+</div> 
       </div>
     <br>
 
@@ -83,6 +27,7 @@
           <th scope="col">Observacion</th>
           <th scope="col">Descripcion</th>
           <th scope="col">Fecha Baja</th>
+        <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
@@ -113,74 +58,9 @@
       @else
       <td></td> 
       @endif
+      <td><a class="btn btn-primary fa fa-edit" onClick="openRolAbmModal({{$r->id}},{{$profesor->id}})"></a></td>
       <td onclick="deleteRolXProf({{$r->id}})"> <button type="button" name="deleteRolbton" id="deleteRolbton" class="btn btn-danger fa fa-trash"></button></td>
-      <!-- ModalSem 
-    <div class="modal fade" id="rolModalSem{{$r->id}}" tabindex="-1" role="dialog" aria-labelledby="rolModalSemLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="rolModalSemLabel">Baja Rol: {{$r->nombre_rol}} </h5>
-            <button id="btnCloseDeleteRol" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" 
-            onClick="closeRolDeleteModal({{$r->id}})">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="container"> 
-              <div class="alert alert-danger" style="display:none"></div>
-              <form action="{{route('profesors.rolDelete')}}" method="POST">
-                  @csrf
-                  <div class="form-row">     
-                    <div class="form-group col-lg-12 col-md-6">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="mondayModalFrm{{$r->id}}">
-                        <label class="form-check-label" for="check1">Lunes</label>
-                      </div>
-                    </div>
-                    <div class="form-group col-lg-12 col-md-6">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="tuesdayModalFrm{{$r->id}}">
-                        <label class="form-check-label" for="check2">Martes</label>
-                      </div>
-                    </div>
-                    <div class="form-group col-lg-12 col-md-6">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="wenesdayModalFrm{{$r->id}}">
-                        <label class="form-check-label" for="check3">Miercoles</label>
-                      </div>
-                    </div>
-                    <div class="form-group col-lg-12 col-md-6">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="thusrdayModalFrm{{$r->id}}">
-                        <label class="form-check-label" for="check4">Jueves</label>
-                      </div>
-                    </div>
-                    <div class="form-group col-lg-12 col-md-6">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="fridayModalFrm{{$r->id}}">
-                        <label class="form-check-label" for="check5">Viernes</label>
-                      </div>
-                    </div>
-                    <div class="form-group col-lg-12 col-md-6">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="saturdayModalFrm{{$r->id}}">
-                        <label class="form-check-label" for="check6">Sabados</label>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                </form>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" name="frmRolSem" id="frmRolSem" onClick="saveRolSem({{$r->id}})" >Grabar</button>
-                    </div>
-          </div>
-          
-          </div>
-          <div class="modal-footer">
-          </div>
-        </div>
-      </div>
-    </div>-->
+     
   </tr>
 {{-- /ModalSem --}}
       
@@ -189,7 +69,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="rolModalDeleteLabel">Asig. fecha fin rol: {{$r->nombre_rol}} - {{$r->sit_revista}} - {{$rol->descripcion}}  </h5>
+            <h5 class="modal-title" id="rolModalDeleteLabel">Asig. fecha fin rol: {{$r->nombre_rol}} - {{$r->sit_revista}} - {{$r->descripcion}}  </h5>
             <button id="btnCloseDeleteRol" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" 
             onClick="closeRolDeleteModal({{$r->id}})">
               <span aria-hidden="true">&times;</span>
@@ -315,11 +195,8 @@ function saveRolSem(id,id_rol_prof) {
         }
     });
     };
-
-  //SAVE FORM RolbyPro
-  $(document).ready(function(){
-            $('#formSubmit').click(function(e){
-                e.preventDefault();
+  //SAVE FORM saveRolAbm
+  function saveRolAbm(id) {
                 $.ajaxSetup({
                     headers: {
                       'X-CSRF-Token': '{{ csrf_token() }}',
@@ -329,6 +206,7 @@ function saveRolSem(id,id_rol_prof) {
                     url: "{{route('profesors.rolCreate')}}",
                     method: 'post',
                     data: {
+                      id:id,
                       id_rol: $('#rolfrm').val(),
                       sit_revista: $('#sitRevistafrm').val(), 
                       legajo: $('#legajo').val(), 
@@ -360,8 +238,7 @@ function saveRolSem(id,id_rol_prof) {
                         }
                     }
                 });
-            });
-        });
+              }
 
 
    $('#deleteRolBtn').on('click',function(){
@@ -487,6 +364,30 @@ function saveRolSem(id,id_rol_prof) {
             //alert('test ok');
         }
     }
+
+    function openRolAbmModal(data_id,id_persona)
+          {
+              var op ="";
+            $.ajax ({
+              headers: {
+              'X-CSRF-Token': '{{ csrf_token() }}',
+              },
+             url:'{{ route("profesors.rolAbmCreate") }}',
+             method: 'post',
+             data:{
+              'id':data_id,
+              'id_persona':id_persona
+             }
+            ,
+            success: function(data2){
+                $('#modalView').html(data2);
+                $('#rolModalCreate').modal('show'); 
+             },
+              error: function(){
+                console.log("Error Occurred");
+              }
+          });
+          };
   </script>
 
 @endsection
