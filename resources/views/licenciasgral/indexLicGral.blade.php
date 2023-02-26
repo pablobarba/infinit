@@ -8,10 +8,10 @@
         <br>
         <div class="row input-daterange">
             <div class="col-md-4">
-                <input type="date" name="from_date" id="from_date" class="form-control" placeholder="From Date" />
+                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date" />
             </div>
             <div class="col-md-4">
-                <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" />
+                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date" />
             </div>
             <div class="col-md-4">
                 <button type="button" name="filter" id="filter" class="btn btn-primary">Filter</button>
@@ -22,7 +22,7 @@
         <div id="tableview">
         </div>
     </div>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
     
     <script>
         //General filter absents by date

@@ -109,7 +109,6 @@
   <div id="modalView">
   </div> 
 </div>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
 <script>
 function saveRolSem(id,id_rol_prof) {

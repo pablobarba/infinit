@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+  <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+  <link rel="stylesheet" href="{{asset('plugins/sweetalert2/sweetalert2.css')}}">
   @yield('scripts')
 
   @extends('adminlte::page')
