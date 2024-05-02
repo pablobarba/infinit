@@ -23,7 +23,7 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $profesors = Profesor::where('baja', 0)->get();
+        $profesors = Profesor::where('baja', 0)->orderBy('apellido')->get();
         //$report = Report::paginate();
         return view("report/index", ['profesors' => $profesors]);
     }
