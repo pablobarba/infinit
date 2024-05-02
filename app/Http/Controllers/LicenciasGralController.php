@@ -40,7 +40,8 @@ class LicenciasGralController extends Controller
 
     public function licxfec()
     {
-        $profesors = Profesor::where('baja', 0)->get();
+        
+        $profesors = Profesor::where('baja', 0)->orderBy('apellido')->get();
         return view("licenciasgral/licxfec", ['profesors' => $profesors]);
     }
 

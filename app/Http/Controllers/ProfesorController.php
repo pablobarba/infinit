@@ -292,6 +292,7 @@ class ProfesorController extends Controller
                 $profesor = Profesor::where('id', $idP)->first();
                 $profesor->nombre = $name;
                 $profesor->apellido = $lastname;
+                $profesor->legajo = $legajo;
                 $profesor->es_profesor = $request->data['es_profesor'] == 'true' ? 1 : 0;
             }
             $profesor->save();

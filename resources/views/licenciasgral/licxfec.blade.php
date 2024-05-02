@@ -2,14 +2,17 @@
 @section('title', 'HOME PHP')
 
 @section('content')
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
     <div class="container">
         <h1>Carga licencias por rango de fecha</h1>
         <div class="row input-daterange">
             <div class="col-md-4">
-                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date" />
+                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Desde" />
             </div>
             <div class="col-md-4">
-                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date" />
+                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Hasta" />
             </div>
             <div class="col-md-4">
                 <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>
@@ -27,16 +30,16 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
                 <form method="POST">
                     @csrf
                     <div class="form-row">
-                        <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                        <div class="form-group">
                             <label for="inputProfesor">Profesor</label>
-                            <select class="form-select" name="profesorFrm" id="profesorFrm">
-                                <option value="">--Por favor seleccionar una opcion--</option>
+                            <select class="select2" name="profesorFrm" id="profesorFrm">
                                 @foreach ($profesors as $p)
                                     <option value="{{ $p->legajo }}">
-                                        {{ $p->legajo }}: {{ $p->nombre }} {{ $p->apellido }}
+                                    {{$p->legajo}}: {{ $p->apellido }} {{ $p->nombre }} 
                                     </option>
                                 @endforeach
                             </select>
@@ -58,8 +61,13 @@
             </div>
         </div>
     </div>
-
+    <!-- Bibliotecas de Select2 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
+        $('.select2').select2();
+
+        
         let data2 = [];
         const formEl = document.querySelector("form");
         const tbodyEl = document.querySelector("tbody");
@@ -159,6 +167,7 @@
 
         function fetch_data() {
             const profesorFrm = document.getElementById("profesorFrm").value;
+            console.log(profesorFrm);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-Token': '{{ csrf_token() }}',
@@ -175,10 +184,11 @@
                 }
             });
         }
-        document.getElementById('profesorFrm').addEventListener('change', function() {
+      
+
+        $('#profesorFrm').on('change', function() {
             fetch_data();
         });
-
         function getViewLicence() {
             $.ajaxSetup({
                 headers: {

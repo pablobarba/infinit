@@ -2,6 +2,7 @@
 @section('title', 'HOME PHP')
 
 @section('content')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <div class="container">
         <h1>Carga masiva de licencias</h1>
         <input type="text" class="form-control" id="txtdate" placeholder="Seleccione Fecha Semanal" />
@@ -22,11 +23,10 @@
                     <div class="form-row">
                         <div class="form-group col-lg-12 col-md-12 col-sm-12">
                             <label for="inputProfesor">Profesor</label>
-                            <select class="form-select" name="profesorFrm" id="profesorFrm">
-                                <option value="">--Por favor seleccionar una opcion--</option>
+                            <select class="form-select select2" name="profesorFrm" id="profesorFrm">
                                 @foreach ($profesors as $p)
                                     <option value="{{ $p->legajo }}">
-                                        {{ $p->legajo }}: {{ $p->nombre }} {{ $p->apellido }}
+                                        {{ $p->legajo }}: {{ $p->apellido }} {{ $p->nombre }} 
                                     </option>
                                 @endforeach
                             </select>
@@ -71,8 +71,12 @@
             </div>
         </div>
     </div>
-
+    <!-- Bibliotecas de Select2 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
+            $('.select2').select2();
+
         let data2 = [];
         const formEl = document.querySelector("form");
         const tbodyEl = document.querySelector("tbody");
@@ -230,10 +234,9 @@
                 }
             });
         }
-        document.getElementById('profesorFrm').addEventListener('change', function() {
+        $('#profesorFrm').on('change', function() {
             fetch_data();
         });
-
         function getViewDays(days) {
             var op = "";
             op += '<div id="dayFrmInner">';

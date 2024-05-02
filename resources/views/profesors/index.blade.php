@@ -190,7 +190,7 @@
                     if (data.status === 422) {
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors.errors, function(key, value) {
-                            $('.alert-danger').show();
+                            $('.alert-danger').show();  
                             $('.alert-danger').append('<li>' + value + '</li>');
                         });
                     } else {

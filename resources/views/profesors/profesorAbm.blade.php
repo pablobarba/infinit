@@ -38,7 +38,8 @@ aria-hidden="true">
                         </div>
                         @else
                         <div class="form-group col-md-6">
-                            <input type="hidden" name="legajofrm" id="legajofrm" class="form-control"
+                        <label for="inputLegajo">Legajo</label>
+                            <input type="input" name="legajofrm" id="legajofrm" class="form-control"
                                 placeholder="Legajo" 
                                  value="{{$prof->legajo}}"/>
                         </div>

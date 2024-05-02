@@ -276,8 +276,20 @@ class ReportController extends Controller
         #region calcDay
         $dayIni =  date('d', strtotime($fecIni));
         $dayFin =  date('d', strtotime($fecFin));
-
+    
         $idxFec = Carbon::parse($fecIni);
+       ;
+
+        if ($dayIni > $dayFin && $idxFec->month < 12)
+        {
+            $idxFec->month = $idxFec->month +1;
+
+        } elseif($dayIni > $dayFin && $idxFec->month == 12)
+            {
+                $idxFec->month = 1; 
+                $yearRep=$idxFec->year+1;
+            }
+
         if ($idxFec->month == 1) {
             $monthRep = "ENERO";
         } else if ($idxFec->month == 2) {
@@ -304,7 +316,7 @@ class ReportController extends Controller
             $monthRep = "DICIEMBRE";
         }
 
-        $yearRep = $idxFec->year;
+      
         $dayReport = "desde" . " " . $dayIni . " al " . $dayFin . " de " . $monthRep . " del " . $yearRep;
         #endregion
 
