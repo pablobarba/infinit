@@ -164,6 +164,7 @@ class ReportController extends Controller
             12 => "DICIEMBRE"
         ];
         $monthAfter =" ";
+        $yearAfter="";
         $collection = new Collection();
 
         $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
@@ -302,7 +303,8 @@ class ReportController extends Controller
             $monthRep = $months[$idxFec->month +1];
 
         } elseif($dayIni > $dayFin && $idxFec->month == 12)
-            {
+            {   
+                $yearAfter ="del ".$idxFec->year." ";
                 $monthAfter = " de " . $months[$idxFec->month]." ";
                 $monthRep= $months[1];
                 $yearRep=$idxFec->year+1;
@@ -334,11 +336,8 @@ class ReportController extends Controller
         } else if ($idxFec->month == 12) {
             $monthRep = "DICIEMBRE";
         }*/
-
-
-
       
-        $dayReport = "desde" . " " . $dayIni . $monthAfter ."al " . $dayFin . " de " . $monthRep . " del " . $yearRep;
+        $dayReport = "desde" . " " . $dayIni . $monthAfter . $yearAfter . "al " . $dayFin . " de " . $monthRep . " del " . $yearRep;
         #endregion
 
         $json = json_encode($collection);
