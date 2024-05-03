@@ -148,7 +148,22 @@ class ReportController extends Controller
     public function getreport(Request $request)
     {
         $sem = $request->fecha_proceso;
-
+        
+        $months = [
+            1 => "ENERO",
+            2 => "FEBRERO",
+            3 => "MARZO",
+            4 => "ABRIL",
+            5 => "MAYO",
+            6 => "JUNIO",
+            7 => "JULIO",
+            8 => "AGOSTO",
+            9 => "SEPTIEMBRE",
+            10 => "OCTUBRE",
+            11 => "NOVIEMBRE",
+            12 => "DICIEMBRE"
+        ];
+        $monthAfter =" ";
         $collection = new Collection();
 
         $fecIni = date('Y-m-d', strtotime($request->fecha_proceso));
@@ -281,16 +296,20 @@ class ReportController extends Controller
         $yearRep=$idxFec->year;
 
         if ($dayIni > $dayFin && $idxFec->month < 12)
-        {
-            $idxFec->month = $idxFec->month +1;
+        {   
+            $monthAfter = " de ". $months[$idxFec->month]." ";
+           
+            $monthRep = $months[$idxFec->month +1];
 
         } elseif($dayIni > $dayFin && $idxFec->month == 12)
             {
-                $idxFec->month = 1; 
+                $monthAfter = " de " . $months[$idxFec->month]." ";
+                $monthRep= $months[1];
                 $yearRep=$idxFec->year+1;
             }
+         
 
-        if ($idxFec->month == 1) {
+       /* if ($idxFec->month == 1) {
             $monthRep = "ENERO";
         } else if ($idxFec->month == 2) {
             $monthRep = "FEBRERO";
@@ -314,10 +333,12 @@ class ReportController extends Controller
             $monthRep = "NOVIEMBRE";
         } else if ($idxFec->month == 12) {
             $monthRep = "DICIEMBRE";
-        }
+        }*/
+
+
 
       
-        $dayReport = "desde" . " " . $dayIni . " al " . $dayFin . " de " . $monthRep . " del " . $yearRep;
+        $dayReport = "desde" . " " . $dayIni . $monthAfter ."al " . $dayFin . " de " . $monthRep . " del " . $yearRep;
         #endregion
 
         $json = json_encode($collection);
