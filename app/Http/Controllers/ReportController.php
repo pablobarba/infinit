@@ -278,7 +278,7 @@ class ReportController extends Controller
         $dayFin =  date('d', strtotime($fecFin));
     
         $idxFec = Carbon::parse($fecIni);
-       ;
+        $yearRep=$idxFec->year;
 
         if ($dayIni > $dayFin && $idxFec->month < 12)
         {
