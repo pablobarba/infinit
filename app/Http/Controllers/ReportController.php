@@ -235,23 +235,12 @@ class ReportController extends Controller
             $logs->nombre = "rxpsem: " . $rxp->apellido_profesor;
             $logs->save();
             if ($rxpsem) {
-                if ($rxpsem->lunes == 1) {
-                    $tmp->lunes = "NC-No Corresponde";
-                }
-                if ($rxpsem->martes == 1) {
-                    $tmp->martes = "NC-No Corresponde";
-                }
-                if ($rxpsem->miercoles == 1) {
-                    $tmp->miercoles = "NC-No Corresponde";
-                }
-                if ($rxpsem->jueves == 1) {
-                    $tmp->jueves = "NC-No Corresponde";
-                }
-                if ($rxpsem->viernes == 1) {
-                    $tmp->viernes = "NC-No Corresponde";
-                }
-                if ($rxpsem->sabado == 1) {
-                    $tmp->sabado = "NC-No Corresponde";
+                $diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+
+                foreach ($diasSemana as $dia) {
+                    if ($rxpsem->$dia == 1) {
+                        $tmp->$dia = "NC-No Corresponde";
+                    }
                 }
             }
             #endregion
