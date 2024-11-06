@@ -239,7 +239,7 @@ class ReportController extends Controller
 
                 foreach ($diasSemana as $dia) {
                     if ($rxpsem->$dia == 1) {
-                        $tmp->$dia = "NC-No Corresponde";
+                        $tmp->$dia = "--------------";
                     }
                 }
             }
