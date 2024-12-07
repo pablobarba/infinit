@@ -183,8 +183,8 @@ class ReportController extends Controller
 
        $rxps = collect($rxps)->sortBy('apellido_profesor');
         $order = [
-            'DIRECTORA' => 1,
-            'VICEDIRECTORA' => 2,
+            'DIRECTOR/A' => 1,
+            'VICEDIRECTOR/A' => 2,
             'REGENTE' => 3,
             'SECRETARIA' => 4,
         ];
