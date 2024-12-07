@@ -180,8 +180,21 @@ class ReportController extends Controller
         
         $rxps = $rxps1->merge($rxps2);
 
-        $rxps = collect($rxps)->sortByDesc('legajo_prof');
 
+       $rxps = collect($rxps)->sortBy('apellido_profesor');
+        $order = [
+            'DIRECTORA' => 1,
+            'VICEDIRECTORA' => 2,
+            'REGENTE' => 3,
+            'SECRETARIA' => 4,
+        ];
+        $rxps = $rxps->sortBy(function ($item) use ($order) {
+            // Obtén el valor del campo a ordenar
+            $role = $item->nombre_rol; // Cambia "role_name" por el nombre del campo correspondiente
+            return $order[$role] ?? 999; // Si no está en el orden, colócalo al final
+        });
+        
+     
         foreach (($rxps) as $rxp) {
             //por cada rol prof veo dias disponibles
             //id baja legajo_prof nombre_profesor apellido_profesor nombre_rol sit_revista fecha_fin	
@@ -199,7 +212,6 @@ class ReportController extends Controller
                 'sabado' => "",
                 'observaciones' =>  $rxp->observacion,
             ];
-
             #region ver licencias
             //falta filtro rol
             $lxps = vwLicenciasXProfesor::where('baja_pro',0)->where('es_profesor',$isprof)->where('legajo_prof', $rxp->legajo_prof)->where('id_rol_prof', $rxp->id)->whereBetween('fecha', [$fecIni, $fecFin])->get();
@@ -329,7 +341,7 @@ class ReportController extends Controller
       
         $dayReport = "desde" . " " . $dayIni . $monthAfter . $yearAfter . "al " . $dayFin . " de " . $monthRep . " del " . $yearRep;
         #endregion
-
+        
         $json = json_encode($collection);
 
         return Excel::download(new profExport($collection, $dayReport,$isprof), 'invoices.xlsx');
